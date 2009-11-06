@@ -62,6 +62,38 @@ extend(hex, {
 		return join.call(arguments, ',');
 	},
 	
+	/**
+	 * Determines the real on-screen position of a DOM element.
+	 * @see http://www.quirksmode.org/js/findpos.html
+	 * @param elem The DOM element to inspect.
+	 * @return An object with x and y properties to represent the position.
+	 */
+	position: function position( elem ) {
+		var left = elem.offsetLeft, top = elem.offsetTop;
+		while (elem = elem.offsetParent) {
+			left += elem.offsetLeft;
+			top += elem.offsetTop;
+		}
+		return { x: left, y: top };
+	},
+	
+	/**
+	 * Retrieves the computed style of a given DOM element.
+	 * @see http://www.quirksmode.org/dom/getstyles.html
+	 * @param elem The DOM element to inspect.
+	 * @param property The CSS property to look up.
+	 * @return The computed style value.
+	 */
+	style: function style( elem, property ) {
+		var value;
+		if (elem.currentStyle) {
+			value = elem.currentStyle[property];
+		} else if (window.getComputedStyle) {
+			value = document.defaultView.getComputedStyle(elem, null).getPropertyValue(property);
+		}
+		return value;
+	},
+	
 	version: version
 	
 });

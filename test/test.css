@@ -2,9 +2,11 @@
  * test.css
  */
 
+/*
 #test-content {
 	display: none; 
 }
+*/
 
 .grid-test {
 	width: 400px;
@@ -12,3 +14,7 @@
 	background: #ccc;
 }
 
+/* rootelem */
+.grid-test div {
+	border: 10px solid black;
+}

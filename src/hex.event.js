@@ -27,9 +27,10 @@ var Event = {
 	/**
 	 * Determine the screen coordinates for a mouse event (click, mouseover, etc).
 	 * @see http://www.quirksmode.org/js/events_properties.html#position
+	 * @param elem DOM element for relative position calculation (optional).
 	 * @return Object with an x and y property for the screen location in pixels.
 	 */
-	mousepos: function mousepos() {
+	mousepos: function mousepos( elem ) {
 		var x = 0, y = 0;
 		if (this.pageX !== undefined && this.pageY !== undefined) {
 			x = this.pageX;
@@ -37,6 +38,11 @@ var Event = {
 		} else if (this.clientX !== undefined && this.clientY !== undefined) {
 			x = this.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 			y = this.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+		}
+		if (elem) {
+			var pos = hex.position(elem);
+			x = x - pos.x;
+			y = y - pos.y;
 		}
 		return { x: x, y: y };
 	}
