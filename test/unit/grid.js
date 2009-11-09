@@ -26,15 +26,15 @@ test("hex.grid()", function() {
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
 	prev.style.border = "1px solid red"
-	prev.style.width = (grid.tile.width - 2) + "px";
-	prev.style.height = (grid.tile.height - 2) + "px";
+	prev.style.width = (grid.tileWidth - 2) + "px";
+	prev.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(prev);
 
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
 	curr.style.border = "1px solid green"
-	curr.style.width = (grid.tile.width - 2) + "px";
-	curr.style.height = (grid.tile.height - 2) + "px";
+	curr.style.width = (grid.tileWidth - 2) + "px";
+	curr.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(curr);
 
 	// Setting grid events
@@ -62,15 +62,15 @@ test("hex.grid()", function() {
 	var q = document.createElement("div");
 	q.style.position = "absolute";
 	q.style.border = "1px solid blue"
-	q.style.width = (grid.tile.width * 0.75 - 2) + "px";
-	q.style.height = (grid.tile.height - 2) + "px";
+	q.style.width = (grid.tileWidth * 0.75 - 2) + "px";
+	q.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(q);
 
 	var h = document.createElement("div");
 	h.style.position = "absolute";
 	h.style.border = "1px solid yellow"
-	h.style.width = (grid.tile.width - 2) + "px";
-	h.style.height = (grid.tile.height - 2) + "px";
+	h.style.width = (grid.tileWidth - 2) + "px";
+	h.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(h);
 
 	// Add DOM event handlers to grid element
@@ -81,13 +81,11 @@ test("hex.grid()", function() {
 			trans = grid.translate(pos.x, pos.y),
 			inv = grid.screenpos(trans.x, trans.y);
 		hex.log("mousemove", [trans.x, trans.y]);
-		q.style.left = ( grid.tile.width * 0.25 + quad.x * grid.tile.width * 0.75 ) + "px";
-		q.style.top = ( quad.y * grid.tile.height ) + "px";
+		q.style.left = ( grid.tileWidth * 0.25 + quad.x * grid.tileWidth * 0.75 ) + "px";
+		q.style.top = ( quad.y * grid.tileHeight ) + "px";
 		h.style.left = ( inv.x ) + "px";
 		h.style.top = ( inv.y ) + "px";
 	});
-		
-	
 	
 });
 
