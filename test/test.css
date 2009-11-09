@@ -2,23 +2,21 @@
  * test.css
  */
 
-/*
 #test-content {
-	display: none; 
+	/* display: none; */
 }
-*/
 
 .grid-test {
 	width: 400px;
 	height: 300px;
 	background: #ccc;
+	float: right;
+	clear: right;
 }
+
 #hexagonal-grid {
 	background-image: url(../graphics/background/hex-grid-48x42.png);
 	background-position: 200px 150px;
 }
 
-/* rootelem */
-.grid-test div {
-	border: 2px ridge yellow;
-}
+

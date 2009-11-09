@@ -54,6 +54,7 @@ test("hex.grid()", function() {
 	// Reorient the root elem.
 	grid.root.style.left = ( parseInt( hex.style(elem, "width") ) * 0.5 ) + "px";
 	grid.root.style.top = ( parseInt( hex.style(elem, "height") ) * 0.5 ) + "px";
+	grid.root.style.border = "2px ridge yellow";
 	
 	return;
 	

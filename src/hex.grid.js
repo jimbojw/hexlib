@@ -169,7 +169,7 @@ hex.extend(hex, {
 		// Keep track of the last tile hovered for mouseover purposes
 		var lastTile = { x: null, y: null };
 		
-		// Callback for any mouse movement event
+		// Handler for any mouse movement event
 		function mousemove(event) {
 
 			// Short-circuit if there are no tileover or tileout events
@@ -198,6 +198,7 @@ hex.extend(hex, {
 				trans = g.translate(pos.x, pos.y);
 			
 			// Short-circuit if we're inside and there's nothing to do
+			// NOTE: For example, on a mouseout or mouseover where the mousemove already covered it
 			if (inside && lastTile.x === trans.x && lastTile.y === trans.y) return;
 				
 			// Queue up tileout callbacks if there are any
@@ -212,7 +213,6 @@ hex.extend(hex, {
 			}
 
 			if (inside) {
-
 
 				// Queue up tileover callbacks if there are any
 				if (tileover) {
