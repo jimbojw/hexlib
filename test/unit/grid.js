@@ -67,7 +67,14 @@ test("hex.grid(hexagonal)", function() {
 	// Reorient the root elem.
 	grid.root.style.left = ( parseInt( hex.style(elem, "width") ) * 0.5 ) + "px";
 	grid.root.style.top = ( parseInt( hex.style(elem, "height") ) * 0.5 ) + "px";
-	grid.root.style.border = "2px ridge yellow";
+	
+	// Extra DOM element to show the origin
+	var origin = document.createElement("div");
+	origin.style.position = "absolute";
+	origin.style.border = "5px ridge red"
+	origin.style.left = "-5px";
+	origin.style.top = "-5px";
+	grid.root.appendChild(origin);
 	
 });
 
@@ -85,16 +92,18 @@ test("hex.grid(rectangular)", function() {
 	// DEBUGGING	
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
-	prev.style.background = "yellow"
-	prev.style.width = (grid.tileWidth - 1) + "px";
-	prev.style.height = (grid.tileHeight - 1) + "px";
+	prev.style.border = "2px solid yellow"
+	prev.style.width = (grid.tileWidth - 5) + "px";
+	prev.style.height = (grid.tileHeight - 5) + "px";
+	prev.style.margin = "1px 0 0 1px";
 	grid.root.appendChild(prev);
 
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
-	curr.style.background = "green"
-	curr.style.width = (grid.tileWidth - 1) + "px";
-	curr.style.height = (grid.tileHeight - 1) + "px";
+	curr.style.border = "2px solid green"
+	curr.style.width = (grid.tileWidth - 5) + "px";
+	curr.style.height = (grid.tileHeight - 5) + "px";
+	curr.style.margin = "1px 0 0 1px";
 	grid.root.appendChild(curr);
 
 	// Setting grid events
@@ -114,8 +123,15 @@ test("hex.grid(rectangular)", function() {
 	// Reorient the root elem.
 	grid.root.style.left = ( parseInt( hex.style(elem, "width") ) * 0.5 ) + "px";
 	grid.root.style.top = ( parseInt( hex.style(elem, "height") ) * 0.5 ) + "px";
-	grid.root.style.border = "2px ridge yellow";
 	
+	// Extra DOM element to show the origin
+	var origin = document.createElement("div");
+	origin.style.position = "absolute";
+	origin.style.border = "5px ridge red"
+	origin.style.left = "-5px";
+	origin.style.top = "-5px";
+	grid.root.appendChild(origin);
+
 });
 
 
