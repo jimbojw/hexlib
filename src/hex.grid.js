@@ -51,6 +51,11 @@ hex.extend(hex, {
 		// Combine options to default values
 		var options = hex.extend({}, Grid.defaults, options);
 		
+		// Check that the particular grid type provides all reqired functions
+		if (grid[options.type] === undefined) {
+			throw "hex.grid." + options.type + " does not exist";
+		}
+		
 		// Setting necessary grid element characteristics
 		var position = hex.style(elem, "position");
 		if (position !== "relative" && position !== "absolute") {

@@ -11,10 +11,23 @@ test("hex.grid()", function() {
 	
 	// Basic availability
 	ok(hex.grid, "hex.grid");
+
+	// Throws when missing required fields
 	throwing(function() {
 		hex.grid();
 	}, "no DOM element supplied", "hex.grid()");
 
+	// Throws when bad options are passed
+	throwing(function() {
+		hex.grid( { nodeType: 1 }, { type: "nosuchtype" } );
+	}, "hex.grid.nosuchtype does not exist", "hex.grid(type:nosuchtype)");
+
+});
+
+test("hex.grid(hexagonal)", function() {
+	
+	expect(1);
+	
 	// Preparing the element	
 	var elem = document.getElementById("hexagonal-grid");
 
@@ -25,15 +38,15 @@ test("hex.grid()", function() {
 	// DEBUGGING	
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
-	prev.style.border = "1px solid red"
-	prev.style.width = (grid.tileWidth - 2) + "px";
+	prev.style.border = "2px solid yellow"
+	prev.style.width = (grid.tileWidth - 4) + "px";
 	prev.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(prev);
 
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
-	curr.style.border = "1px solid green"
-	curr.style.width = (grid.tileWidth - 2) + "px";
+	curr.style.border = "2px solid green"
+	curr.style.width = (grid.tileWidth - 4) + "px";
 	curr.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(curr);
 
@@ -56,36 +69,52 @@ test("hex.grid()", function() {
 	grid.root.style.top = ( parseInt( hex.style(elem, "height") ) * 0.5 ) + "px";
 	grid.root.style.border = "2px ridge yellow";
 	
-	return;
+});
+
+test("hex.grid(rectangular)", function() {
 	
-	// DEBUGGING
-	var q = document.createElement("div");
-	q.style.position = "absolute";
-	q.style.border = "1px solid blue"
-	q.style.width = (grid.tileWidth * 0.75 - 2) + "px";
-	q.style.height = (grid.tileHeight - 2) + "px";
-	grid.root.appendChild(q);
+	expect(1);
+	
+	// Preparing the element	
+	var elem = document.getElementById("rectangular-grid");
 
-	var h = document.createElement("div");
-	h.style.position = "absolute";
-	h.style.border = "1px solid yellow"
-	h.style.width = (grid.tileWidth - 2) + "px";
-	h.style.height = (grid.tileHeight - 2) + "px";
-	grid.root.appendChild(h);
+	// Creating a grid
+	var grid = hex.grid(elem, { type: "rectangular" });
+	ok(grid, "hex.grid(elem, {type:'rectangular'})");
 
-	// Add DOM event handlers to grid element
-	hex.addEvent(elem, "mousemove", function(event) {
-		var
-			pos = event.mousepos(grid.root),
-			quad = grid.quadrant(pos.x, pos.y),
-			trans = grid.translate(pos.x, pos.y),
-			inv = grid.screenpos(trans.x, trans.y);
-		hex.log("mousemove", [trans.x, trans.y]);
-		q.style.left = ( grid.tileWidth * 0.25 + quad.x * grid.tileWidth * 0.75 ) + "px";
-		q.style.top = ( quad.y * grid.tileHeight ) + "px";
-		h.style.left = ( inv.x ) + "px";
-		h.style.top = ( inv.y ) + "px";
+	// DEBUGGING	
+	var prev = document.createElement("div");
+	prev.style.position = "absolute";
+	prev.style.background = "yellow"
+	prev.style.width = (grid.tileWidth - 1) + "px";
+	prev.style.height = (grid.tileHeight - 1) + "px";
+	grid.root.appendChild(prev);
+
+	var curr = document.createElement("div");
+	curr.style.position = "absolute";
+	curr.style.background = "green"
+	curr.style.width = (grid.tileWidth - 1) + "px";
+	curr.style.height = (grid.tileHeight - 1) + "px";
+	grid.root.appendChild(curr);
+
+	// Setting grid events
+	grid.addEvent("tileover", function(x, y) {
+		hex.log([x, y], "tileover");
+		var inv = grid.screenpos(x, y);
+		curr.style.left = inv.x + "px";
+		curr.style.top = inv.y + "px";
 	});
+	grid.addEvent("tileout", function(x, y) {
+		hex.log([x, y], "tileout");
+		var inv = grid.screenpos(x, y);
+		prev.style.left = inv.x + "px";
+		prev.style.top = inv.y + "px";
+	});
+	
+	// Reorient the root elem.
+	grid.root.style.left = ( parseInt( hex.style(elem, "width") ) * 0.5 ) + "px";
+	grid.root.style.top = ( parseInt( hex.style(elem, "height") ) * 0.5 ) + "px";
+	grid.root.style.border = "2px ridge yellow";
 	
 });
 

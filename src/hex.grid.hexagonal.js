@@ -1,11 +1,12 @@
 /**
- * hex.grid.js
+ * hex.grid.hexagonal.js
  */
 (function(){
 
 var
 	undefined,
 	window = this,
+	floor = Math.floor,
 	hex = window.hex;
 
 /**
@@ -23,8 +24,8 @@ hex.grid.hexagonal = {
 		var 
 			w = this.tileWidth,
 			h = this.tileHeight,
-			qx = Math.floor( ( posx - w * 0.25 ) / ( w * 0.75 ) ),
-			qy = Math.floor( ( posy ) / h );
+			qx = floor( ( posx - w * 0.25 ) / ( w * 0.75 ) ),
+			qy = floor( ( posy ) / h );
 		return { x:qx, y:qy };
 	},
 	
