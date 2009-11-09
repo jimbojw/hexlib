@@ -3,6 +3,9 @@
  */
 (function(){
 
-var undefined, window = this, hex = window.hex;
+var
+	undefined,
+	window = this,
+	hex = window.hex;
 
 })();

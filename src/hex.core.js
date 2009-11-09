@@ -7,6 +7,7 @@ var
 	version = '0.1',
 	undefined,
 	window = this,
+	document = window.document,
 	join = Array.prototype.join,
 	slice = Array.prototype.slice,
 	has = Object.prototype.hasOwnProperty,
@@ -63,6 +64,16 @@ extend(hex, {
 	},
 	
 	/**
+	 * Log arguments if the browser supports it.
+	 * @param args Any number of arguments to log.
+	 */
+	log: function log( /* args ... */ ) {
+		if (this.debug && window.console) {
+			console.log.apply(console, arguments);
+		}
+	},
+	
+	/**
 	 * Determines the real on-screen position of a DOM element.
 	 * @see http://www.quirksmode.org/js/findpos.html
 	 * @param elem The DOM element to inspect.
@@ -75,6 +86,15 @@ extend(hex, {
 			top += elem.offsetTop;
 		}
 		return { x: left, y: top };
+	},
+	
+	/**
+	 * Determines the size of a DOM element.
+	 * @param elem The DOM element to inspect.
+	 * @return An object with x and y properties to represent the dimensions.
+	 */
+	size: function size( elem ) {
+		return { x: elem.offsetWidth, y: elem.offsetHeight };
 	},
 	
 	/**

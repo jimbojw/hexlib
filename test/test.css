@@ -13,8 +13,12 @@
 	height: 300px;
 	background: #ccc;
 }
+#hexagonal-grid {
+	background-image: url(../graphics/background/hex-grid-48x42.png);
+	background-position: 200px 150px;
+}
 
 /* rootelem */
 .grid-test div {
-	border: 10px solid black;
+	border: 2px ridge yellow;
 }

@@ -3,6 +3,9 @@
  * Tests for hex.core.js functionality.
  */
 
+// Enable debug logging
+hex.debug = true;
+
 module("core");
 
 test("base library", function() {
