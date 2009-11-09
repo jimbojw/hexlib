@@ -4,7 +4,7 @@
  */
 
 // Enable debug logging
-//hex.debug = true;
+hex.debug = true;
 
 module("core");
 

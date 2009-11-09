@@ -10,9 +10,3 @@ test("hex.addEvent()", function() {
 	// TODO: Add tests!
 });
 
-test("hex.richEvent()", function() {
-	expect(0);
-	// TODO: Add tests!
-});
-
-
