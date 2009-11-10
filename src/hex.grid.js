@@ -30,7 +30,41 @@ var Grid = {
 	 * Default option values.
 	 */
 	defaults: {
+	
+		// Type of grid to construct.
 		type: "hexagonal"
+		
+	},
+	
+	/**
+	 * Get or set the origin position for the grid element.
+	 * @param x The horizontal position from the left in pixels (optional).
+	 * @param y The vertical position from the top in pixels (optional).
+	 * @return The old origin position.
+	 */
+	origin: function origin( x, y ) {
+	
+		// Determine current offset position of the origin
+		var
+			elempos = hex.position(this.elem),
+			rootpos = hex.position(this.root),
+			pos = {
+				x: rootpos.x - elempos.x,
+				y: rootpos.y - elempos.y
+			};
+		
+		// Set the origin position if requested
+		if (x !== undefined && y !== undefined) {
+			
+			x = +x;
+			y = +y;
+			this.root.style.left = x + "px";
+			this.root.style.top = y + "px";
+			this.elem.style.backgroundPosition = x + "px " + y + "px";
+			
+		}
+		
+		return pos;
 	}
 
 };
@@ -75,7 +109,7 @@ hex.extend(hex, {
 			Grid,
 			grid[options.type],
 			options, {
-				element: elem,
+				elem: elem,
 				root: root
 			}
 		);
@@ -83,7 +117,7 @@ hex.extend(hex, {
 		// Keep track of the last tile hovered for mouseover purposes
 		var lastTile = { x: null, y: null };
 		
-		// Handler for any mouse movement event
+		// Handler for any mouse movement events
 		function mousemove(event) {
 
 			// Short-circuit if there are no tileover or tileout events
@@ -151,7 +185,7 @@ hex.extend(hex, {
 
 		}
 		
-		// Add DOM event handlers to grid element
+		// Add DOM event handlers to grid element for mouse movement
 		hex.addEvent(elem, "mousemove", mousemove);
 		hex.addEvent(elem, "mouseover", mousemove);
 		hex.addEvent(elem, "mouseout", mousemove);

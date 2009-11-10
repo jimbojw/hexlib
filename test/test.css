@@ -15,11 +15,9 @@
 
 #hexagonal-grid {
 	background-image: url(../graphics/background/hex-grid-48x42.png);
-	background-position: 200px 150px;
 }
 
 #rectangular-grid {
 	background-image: url(../graphics/background/square-grid-48x48.png);
-	background-position: 200px 150px;
 }
 

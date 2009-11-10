@@ -24,6 +24,11 @@ test("hex.grid()", function() {
 
 });
 
+test("grid.origin()", function() {
+	expect(0);
+	// TODO: Add tests!
+});
+
 test("hex.grid(hexagonal)", function() {
 	
 	expect(1);
@@ -35,7 +40,7 @@ test("hex.grid(hexagonal)", function() {
 	var grid = hex.grid(elem);
 	ok(grid, "hex.grid(elem)");
 
-	// DEBUGGING	
+	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
 	prev.style.border = "2px solid yellow"
@@ -43,6 +48,7 @@ test("hex.grid(hexagonal)", function() {
 	prev.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(prev);
 
+	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
 	curr.style.border = "2px solid green"
@@ -50,6 +56,14 @@ test("hex.grid(hexagonal)", function() {
 	curr.style.height = (grid.tileHeight - 2) + "px";
 	grid.root.appendChild(curr);
 
+	// Extra element to mark the origin
+	var marker = document.createElement("div");
+	marker.style.position = "absolute";
+	marker.style.border = "5px ridge red"
+	marker.style.left = "-5px";
+	marker.style.top = "-5px";
+	grid.root.appendChild(marker);
+	
 	// Setting grid events
 	grid.addEvent("tileover", function(x, y) {
 		hex.log([x, y], "tileover");
@@ -64,17 +78,9 @@ test("hex.grid(hexagonal)", function() {
 		prev.style.top = inv.y + "px";
 	});
 	
-	// Reorient the root elem.
-	grid.root.style.left = ( parseInt( hex.style(elem, "width") ) * 0.5 ) + "px";
-	grid.root.style.top = ( parseInt( hex.style(elem, "height") ) * 0.5 ) + "px";
-	
-	// Extra DOM element to show the origin
-	var origin = document.createElement("div");
-	origin.style.position = "absolute";
-	origin.style.border = "5px ridge red"
-	origin.style.left = "-5px";
-	origin.style.top = "-5px";
-	grid.root.appendChild(origin);
+	// Center the root element.
+	var size = hex.size(elem);
+	grid.origin(size.x * 0.5, size.y * 0.5);
 	
 });
 
@@ -89,7 +95,7 @@ test("hex.grid(rectangular)", function() {
 	var grid = hex.grid(elem, { type: "rectangular" });
 	ok(grid, "hex.grid(elem, {type:'rectangular'})");
 
-	// DEBUGGING	
+	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
 	prev.style.border = "2px solid yellow"
@@ -98,6 +104,7 @@ test("hex.grid(rectangular)", function() {
 	prev.style.margin = "1px 0 0 1px";
 	grid.root.appendChild(prev);
 
+	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
 	curr.style.border = "2px solid green"
@@ -105,6 +112,14 @@ test("hex.grid(rectangular)", function() {
 	curr.style.height = (grid.tileHeight - 5) + "px";
 	curr.style.margin = "1px 0 0 1px";
 	grid.root.appendChild(curr);
+
+	// Extra element to show the origin
+	var marker = document.createElement("div");
+	marker.style.position = "absolute";
+	marker.style.border = "5px ridge red"
+	marker.style.left = "-5px";
+	marker.style.top = "-5px";
+	grid.root.appendChild(marker);
 
 	// Setting grid events
 	grid.addEvent("tileover", function(x, y) {
@@ -120,18 +135,10 @@ test("hex.grid(rectangular)", function() {
 		prev.style.top = inv.y + "px";
 	});
 	
-	// Reorient the root elem.
-	grid.root.style.left = ( parseInt( hex.style(elem, "width") ) * 0.5 ) + "px";
-	grid.root.style.top = ( parseInt( hex.style(elem, "height") ) * 0.5 ) + "px";
+	// Center the root element.
+	var size = hex.size(elem);
+	grid.origin(size.x * 0.5, size.y * 0.5);
 	
-	// Extra DOM element to show the origin
-	var origin = document.createElement("div");
-	origin.style.position = "absolute";
-	origin.style.border = "5px ridge red"
-	origin.style.left = "-5px";
-	origin.style.top = "-5px";
-	grid.root.appendChild(origin);
-
 });
 
 

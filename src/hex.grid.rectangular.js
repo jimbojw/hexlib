@@ -6,6 +6,7 @@
 var
 	undefined,
 	window = this,
+	ceil = Math.ceil,
 	floor = Math.floor,
 	hex = window.hex;
 
@@ -23,12 +24,13 @@ hex.grid.rectangular = {
 	screenpos: function screenpos( rectx, recty ) {
 		return {
 			x: rectx * this.tileWidth,
-			y: recty * this.tileHeight
+			y: -recty * this.tileHeight
 		};
 	},
 	
 	/**
 	 * Rectangular tile characteristics.
+	 * NOTE: Override these using the options hash passed into hex.grid().
 	 */
 	tileHeight: 48,
 	tileWidth: 48,
@@ -42,7 +44,7 @@ hex.grid.rectangular = {
 	translate: function translate( posx, posy ) {
 		return {
 			x: floor( posx / this.tileWidth ),
-			y: floor( posy / this.tileHeight )
+			y: ceil( -posy / this.tileHeight )
 		};
 	}
 
