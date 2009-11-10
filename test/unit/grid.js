@@ -46,6 +46,7 @@ test("hex.grid(hexagonal)", function() {
 	prev.style.border = "2px solid yellow"
 	prev.style.width = (grid.tileWidth - 4) + "px";
 	prev.style.height = (grid.tileHeight - 2) + "px";
+	prev.style.display = "none";
 	grid.root.appendChild(prev);
 
 	// Element to show the currently hovered tile
@@ -54,6 +55,7 @@ test("hex.grid(hexagonal)", function() {
 	curr.style.border = "2px solid green"
 	curr.style.width = (grid.tileWidth - 4) + "px";
 	curr.style.height = (grid.tileHeight - 2) + "px";
+	curr.style.display = "none";
 	grid.root.appendChild(curr);
 
 	// Extra element to mark the origin
@@ -64,7 +66,7 @@ test("hex.grid(hexagonal)", function() {
 	marker.style.top = "-5px";
 	grid.root.appendChild(marker);
 	
-	// Setting grid events
+	// Setting mouse movement related tile events
 	grid.addEvent("tileover", function(x, y) {
 		hex.log([x, y], "tileover");
 		var inv = grid.screenpos(x, y);
@@ -77,6 +79,8 @@ test("hex.grid(hexagonal)", function() {
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
 	});
+
+	// Setting mouse button related tile events
 	grid.addEvent("tiledown", function(x, y) {
 		hex.log([x, y], "tiledown");
 	});
@@ -85,6 +89,18 @@ test("hex.grid(hexagonal)", function() {
 	});
 	grid.addEvent("tileclick", function(x, y) {
 		hex.log([x, y], "tileclick");
+	});
+
+	// Setting mouse movement related grid events
+	grid.addEvent("gridover", function(x, y) {
+		hex.log([x, y], "gridover");
+		curr.style.display = "";
+		prev.style.display = "";
+	});
+	grid.addEvent("gridout", function(x, y) {
+		hex.log([x, y], "gridout");
+		curr.style.display = "none";
+		prev.style.display = "none";
 	});
 	
 	// Center the root element.
@@ -111,6 +127,7 @@ test("hex.grid(rectangular)", function() {
 	prev.style.width = (grid.tileWidth - 5) + "px";
 	prev.style.height = (grid.tileHeight - 5) + "px";
 	prev.style.margin = "1px 0 0 1px";
+	prev.style.display = "none";
 	grid.root.appendChild(prev);
 
 	// Element to show the currently hovered tile
@@ -120,6 +137,7 @@ test("hex.grid(rectangular)", function() {
 	curr.style.width = (grid.tileWidth - 5) + "px";
 	curr.style.height = (grid.tileHeight - 5) + "px";
 	curr.style.margin = "1px 0 0 1px";
+	curr.style.display = "none";
 	grid.root.appendChild(curr);
 
 	// Extra element to show the origin
@@ -130,19 +148,21 @@ test("hex.grid(rectangular)", function() {
 	marker.style.top = "-5px";
 	grid.root.appendChild(marker);
 
-	// Setting grid events
+	// Setting mouse movement related tile events
 	grid.addEvent("tileover", function(x, y) {
-		//hex.log([x, y], "tileover");
+		hex.log([x, y], "tileover");
 		var inv = grid.screenpos(x, y);
 		curr.style.left = inv.x + "px";
 		curr.style.top = inv.y + "px";
 	});
 	grid.addEvent("tileout", function(x, y) {
-		//hex.log([x, y], "tileout");
+		hex.log([x, y], "tileout");
 		var inv = grid.screenpos(x, y);
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
 	});
+
+	// Setting mouse button related tile events
 	grid.addEvent("tiledown", function(x, y) {
 		hex.log([x, y], "tiledown");
 	});
@@ -151,6 +171,18 @@ test("hex.grid(rectangular)", function() {
 	});
 	grid.addEvent("tileclick", function(x, y) {
 		hex.log([x, y], "tileclick");
+	});
+
+	// Setting mouse movement related grid events
+	grid.addEvent("gridover", function(x, y) {
+		hex.log([x, y], "gridover");
+		curr.style.display = "";
+		prev.style.display = "";
+	});
+	grid.addEvent("gridout", function(x, y) {
+		hex.log([x, y], "gridout");
+		curr.style.display = "none";
+		prev.style.display = "none";
 	});
 	
 	// Center the root element.

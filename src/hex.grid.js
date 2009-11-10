@@ -122,8 +122,13 @@ hex.extend(hex, {
 		// Handler for any mouse movement events
 		function mousemove(event) {
 
-			// Short-circuit if there are no tileover or tileout events
-			if (!g.events.tileover && !g.events.tileout) return;
+			// Short-circuit if there are no tile or grid events
+			if (
+				!g.events.tileover &&
+				!g.events.tileout &&
+				!g.events.gridover &&
+				!g.events.gridout
+			) return;
 			
 			var
 				// Determine whether the event happened inside the bounds of the grid element
@@ -132,6 +137,8 @@ hex.extend(hex, {
 				timeout = 10,
 				tileover = g.events.tileover,
 				tileout = g.events.tileout,
+				gridover = g.events.gridover,
+				gridout = g.events.gridout,
 
 				// Determine the grid-centric coordinates of the latest hovered tile
 				pos = event.mousepos(g.root),
@@ -152,7 +159,29 @@ hex.extend(hex, {
 				}
 			}
 
+			// Queue up gridout callbacks if applicable
+			if (!inside && gridout && lastTile.x !== null && lastTile.y !== null) {
+				for (var i=0, l=gridout.length; i<l; i++) {
+					(function(callback, x, y){
+						setTimeout(function(){
+							callback(x, y);
+						}, timeout++);
+					})(gridout[i], lastTile.x, lastTile.y);
+				}
+			}
+
 			if (inside) {
+
+				// Queue up gridover callbacks if applicable
+				if (gridover && lastTile.x === null && lastTile.y === null) {
+					for (var i=0, l=gridover.length; i<l; i++) {
+						(function(callback, x, y){
+							setTimeout(function(){
+								callback(x, y);
+							}, timeout++);
+						})(gridover[i], trans.x, trans.y);
+					}
+				}
 
 				// Queue up tileover callbacks if there are any
 				if (tileover) {
