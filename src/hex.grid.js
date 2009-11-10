@@ -119,8 +119,25 @@ hex.extend(hex, {
 		// Keep track of the last tile hovered for mouseover purposes
 		var lastTile = { x: null, y: null };
 		
+		// Keep track of the panning state
+		var pan = {
+			panning: false,
+			x: null,
+			y: null
+		};
+		
 		// Handler for any mouse movement events
 		function mousemove(event) {
+		
+			// Handle panning
+			// TODO: FIX ME!
+			if (false && pan.panning) {
+				var mousepos = event.mousepos(root);
+				g.origin(
+					mousepos.x - pan.x,
+					mousepos.y - pan.y
+				);
+			}
 
 			// Short-circuit if there are no tile or grid events
 			if (
@@ -246,8 +263,14 @@ hex.extend(hex, {
 					}
 				}
 				
+				// Remember mousedown target (to test for "click" later)
 				downTile.x = trans.x;
 				downTile.y = trans.y;
+				
+				// Begin panning
+				pan.panning = true;
+				pan.x = pos.x;
+				pan.y = pos.y;
 				
 			} else if (event.type === "mouseup") {
 			
@@ -273,9 +296,15 @@ hex.extend(hex, {
 					}
 				}
 				
+				// Clear mousedown target
 				downTile.x = null;
 				downTile.y = null;
 
+				// Cease panning
+				pan.panning = false;
+				pan.x = pos.x;
+				pan.y = pos.y;
+				
 			}
 			
 		}
