@@ -106,7 +106,9 @@ hex.extend(hex, {
 		
 		// Create the grid object
 		var g = hex.create(
-			Grid,
+			Grid, {
+				events: {}
+			},
 			grid[options.type],
 			options, {
 				elem: elem,
@@ -121,21 +123,11 @@ hex.extend(hex, {
 		function mousemove(event) {
 
 			// Short-circuit if there are no tileover or tileout events
-			if (!g.events || (!g.events.tileover && !g.events.tileout)) return;
+			if (!g.events.tileover && !g.events.tileout) return;
 			
 			var
-				// Details about the mouse event and location/size of the grid 
-				rawpos = event.mousepos(),
-				elempos = hex.position(elem),
-				elemsize = hex.size(elem),
-	
 				// Determine whether the event happened inside the bounds of the grid element
-				inside = (
-					rawpos.x > elempos.x &&
-					rawpos.x < elempos.x + elemsize.x &&
-					rawpos.y > elempos.y &&
-					rawpos.y < elempos.y + elemsize.y
-				),
+				inside = event.inside(elem),
 				
 				timeout = 10,
 				tileover = g.events.tileover,
@@ -189,6 +181,79 @@ hex.extend(hex, {
 		hex.addEvent(elem, "mousemove", mousemove);
 		hex.addEvent(elem, "mouseover", mousemove);
 		hex.addEvent(elem, "mouseout", mousemove);
+		
+		// Keep track of last tile mousedown'ed on
+		var downTile = { x: null, y: null };
+
+		// Handler for any mouse button events
+		function mousebutton(event) {
+		
+			// Short-circuit if there are no tiledown, tileup or tileclick events
+			if (!g.events.tiledown && !g.events.tileup && !g.events.tileclick) return;
+			
+			// Short-circuit if the event happened outside the bounds of the grid element.
+			if (!event.inside(elem)) return;
+				
+			var
+				timeout = 10,
+				tiledown = g.events.tiledown,
+				tileup = g.events.tileup,
+				tileclick = g.events.tileclick,
+
+				// Determine the grid-centric coordinates of the latest hovered tile
+				pos = event.mousepos(g.root),
+				trans = g.translate(pos.x, pos.y);
+
+			if (event.type === "mousedown") {
+
+				// Queue up tiledown callbacks
+				if (tiledown) {
+					for (var i=0, l=tiledown.length; i<l; i++) {
+						(function(callback, x, y){
+							setTimeout(function(){
+								callback(x, y);
+							}, timeout++);
+						})(tiledown[i], trans.x, trans.y);
+					}
+				}
+				
+				downTile.x = trans.x;
+				downTile.y = trans.y;
+				
+			} else if (event.type === "mouseup") {
+			
+				// Queue up tileup callbacks
+				if (tileup) {
+					for (var i=0, l=tileup.length; i<l; i++) {
+						(function(callback, x, y){
+							setTimeout(function(){
+								callback(x, y);
+							}, timeout++);
+						})(tileup[i], trans.x, trans.y);
+					}
+				}
+
+				// Queue up tileclick callbacks
+				if (tileclick && downTile.x === trans.x && downTile.y === trans.y) {
+					for (var i=0, l=tileclick.length; i<l; i++) {
+						(function(callback, x, y){
+							setTimeout(function(){
+								callback(x, y);
+							}, timeout++);
+						})(tileclick[i], trans.x, trans.y);
+					}
+				}
+				
+				downTile.x = null;
+				downTile.y = null;
+
+			}
+			
+		}
+
+		// Add DOM event handlers to grid element for mouse movement
+		hex.addEvent(elem, "mousedown", mousebutton);
+		hex.addEvent(elem, "mouseup", mousebutton);
 
 		return g;
 	}

@@ -77,6 +77,15 @@ test("hex.grid(hexagonal)", function() {
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
 	});
+	grid.addEvent("tiledown", function(x, y) {
+		hex.log([x, y], "tiledown");
+	});
+	grid.addEvent("tileup", function(x, y) {
+		hex.log([x, y], "tileup");
+	});
+	grid.addEvent("tileclick", function(x, y) {
+		hex.log([x, y], "tileclick");
+	});
 	
 	// Center the root element.
 	var size = hex.size(elem);
@@ -123,16 +132,25 @@ test("hex.grid(rectangular)", function() {
 
 	// Setting grid events
 	grid.addEvent("tileover", function(x, y) {
-		hex.log([x, y], "tileover");
+		//hex.log([x, y], "tileover");
 		var inv = grid.screenpos(x, y);
 		curr.style.left = inv.x + "px";
 		curr.style.top = inv.y + "px";
 	});
 	grid.addEvent("tileout", function(x, y) {
-		hex.log([x, y], "tileout");
+		//hex.log([x, y], "tileout");
 		var inv = grid.screenpos(x, y);
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
+	});
+	grid.addEvent("tiledown", function(x, y) {
+		hex.log([x, y], "tiledown");
+	});
+	grid.addEvent("tileup", function(x, y) {
+		hex.log([x, y], "tileup");
+	});
+	grid.addEvent("tileclick", function(x, y) {
+		hex.log([x, y], "tileclick");
 	});
 	
 	// Center the root element.
