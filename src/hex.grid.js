@@ -164,26 +164,25 @@ hex.extend(hex, {
 			// Short-circuit if we're inside and there's nothing to do
 			// NOTE: For example, on a mouseout or mouseover where the mousemove already covered it
 			if (inside && lastTile.x === trans.x && lastTile.y === trans.y) return;
+			
+			// Shorthand method for queuing up a callback
+			function queue(callback, args) {
+				return setTimeout(function(){
+					callback.apply(null, args);
+				}, timeout++);
+			}
 				
 			// Queue up tileout callbacks if there are any
 			if (tileout && lastTile.x !== null && lastTile.y !== null) {
 				for (var i=0, l=tileout.length; i<l; i++) {
-					(function(callback, x, y){
-						setTimeout(function(){
-							callback(x, y);
-						}, timeout++);
-					})(tileout[i], lastTile.x, lastTile.y);
+					queue(tileout[i], [lastTile.x, lastTile.y]);
 				}
 			}
 
 			// Queue up gridout callbacks if applicable
 			if (!inside && gridout && lastTile.x !== null && lastTile.y !== null) {
 				for (var i=0, l=gridout.length; i<l; i++) {
-					(function(callback, x, y){
-						setTimeout(function(){
-							callback(x, y);
-						}, timeout++);
-					})(gridout[i], lastTile.x, lastTile.y);
+					queue(gridout[i], [lastTile.x, lastTile.y]);
 				}
 			}
 
@@ -192,22 +191,14 @@ hex.extend(hex, {
 				// Queue up gridover callbacks if applicable
 				if (gridover && lastTile.x === null && lastTile.y === null) {
 					for (var i=0, l=gridover.length; i<l; i++) {
-						(function(callback, x, y){
-							setTimeout(function(){
-								callback(x, y);
-							}, timeout++);
-						})(gridover[i], trans.x, trans.y);
+						queue(gridover[i], [trans.x, trans.y]);
 					}
 				}
 
 				// Queue up tileover callbacks if there are any
 				if (tileover) {
 					for (var i=0, l=tileover.length; i<l; i++) {
-						(function(callback, x, y){
-							setTimeout(function(){
-								callback(x, y);
-							}, timeout++);
-						})(tileover[i], trans.x, trans.y);
+						queue(tileover[i], [trans.x, trans.y]);
 					}
 				}
 			
@@ -250,16 +241,19 @@ hex.extend(hex, {
 				pos = event.mousepos(g.root),
 				trans = g.translate(pos.x, pos.y);
 
+			// Shorthand method for queuing up a callback
+			function queue(callback, args) {
+				return setTimeout(function(){
+					callback.apply(null, args);
+				}, timeout++);
+			}
+				
 			if (event.type === "mousedown") {
 
 				// Queue up tiledown callbacks
 				if (tiledown) {
 					for (var i=0, l=tiledown.length; i<l; i++) {
-						(function(callback, x, y){
-							setTimeout(function(){
-								callback(x, y);
-							}, timeout++);
-						})(tiledown[i], trans.x, trans.y);
+						queue(tiledown[i], [trans.x, trans.y]);
 					}
 				}
 				
@@ -277,22 +271,14 @@ hex.extend(hex, {
 				// Queue up tileup callbacks
 				if (tileup) {
 					for (var i=0, l=tileup.length; i<l; i++) {
-						(function(callback, x, y){
-							setTimeout(function(){
-								callback(x, y);
-							}, timeout++);
-						})(tileup[i], trans.x, trans.y);
+						queue(tileup[i], [trans.x, trans.y]);
 					}
 				}
 
 				// Queue up tileclick callbacks
 				if (tileclick && downTile.x === trans.x && downTile.y === trans.y) {
 					for (var i=0, l=tileclick.length; i<l; i++) {
-						(function(callback, x, y){
-							setTimeout(function(){
-								callback(x, y);
-							}, timeout++);
-						})(tileclick[i], trans.x, trans.y);
+						queue(tileclick[i], [trans.x, trans.y]);
 					}
 				}
 				
