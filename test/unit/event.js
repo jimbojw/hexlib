@@ -10,3 +10,8 @@ test("hex.addEvent()", function() {
 	// TODO: Add tests!
 });
 
+test("event.inside()", function() {
+	expect(0);
+	// TODO: Add tests!
+});
+

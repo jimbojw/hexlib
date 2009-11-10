@@ -25,6 +25,27 @@ var Event = {
 	},
 	
 	/**
+	 * Determine whether the event ocurred within the bounds of the provided element.
+	 * @param elem DOM element for relative position calculation (optional).
+	 * @return Object with an x and y property for the screen location in pixels.
+	 */
+	inside: function inside( elem ) {
+		// Details about the event coordinates and location/size of the element 
+		var
+			pos = this.mousepos(),
+			position = hex.position(elem),
+			size = hex.size(elem);
+
+		// Determine whether the event happened inside the bounds of the element
+		return (
+			pos.x > position.x &&
+			pos.x < position.x + size.x &&
+			pos.y > position.y &&
+			pos.y < position.y + size.y
+		);
+	},
+
+	/**
 	 * Determine the screen coordinates for a mouse event (click, mouseover, etc).
 	 * @see http://www.quirksmode.org/js/events_properties.html#position
 	 * @param elem DOM element for relative position calculation (optional).
