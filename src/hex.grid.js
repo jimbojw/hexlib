@@ -95,6 +95,9 @@ hex.extend(hex, {
 		if (position !== "relative" && position !== "absolute") {
 			elem.style.position = "relative";
 		}
+		if (hex.style(elem, "overflow") !== "hidden") {
+			elem.style.overflow = "hidden";
+		}
 		
 		// Create and attach the root element
 		var root = document.createElement("div");
