@@ -6,6 +6,7 @@
 var
 	undefined,
 	window = this,
+	document = window.document,
 	hex = window.hex;
 
 /**
@@ -70,28 +71,113 @@ var Event = {
 
 };
 
-hex.extend(hex, {
+if (document.addEventListener) {
 	
 	/**
-	 * Adds an event handler to the supplied DOM element.
-	 * @param elem The DOM element to which to attach the event.
-	 * @param type String representing the type of event to hook (ex: "click").
-	 * @param handler Function to handle the event.
-	 * @return this.
+	 * The Handler prototype.
 	 */
-	addEvent: function addEvent( elem, type, handler ) {
-		function callback(e) {
-			if (!e) var e = window.event;
-			return handler.call(elem, hex.create(e, Event));
+	var Handler = {
+		
+		/**
+		 * Remove the handler from the object to which it was previously attached.
+		 */
+		remove: function remove() {
+			return this.elem.removeEventListener(this.type, this.callback);
 		}
-		if (elem.addEventListener) {
-			elem.addEventListener(type, callback, false);
-		} else if (elem.attachEvent) {
-			elem.attachEvent("on" + type, callback);
-		}
-		return this;
-	}
+		
+	};
 	
-});
+	hex.extend(hex, {
+	
+		/**
+		 * Adds an event handler to the supplied DOM element.
+		 * @param elem The DOM element to which to attach the event.
+		 * @param type String representing the type of event to hook (ex: "click").
+		 * @param handler Function to handle the event.
+		 * @return Handler instance .
+		 */
+		addEvent: function addEvent( elem, type, handler ) {
+			function callback(e) {
+				return handler.call(elem, hex.create(e, Event));
+			}
+			elem.addEventListener(type, callback, false);
+			return hex.create(Handler, {
+				callback: callback,
+				elem: elem,
+				handler: handler,
+				type: type
+			});
+		},
+	
+		/**
+		 * Removes an event handler from the supplied DOM element.
+		 * @param elem The DOM element to which to remove the event.
+		 * @param type String representing the type of event to hook (ex: "click").
+		 * @param handler Function to remove.
+		 */
+		removeEvent: function removeEvent( elem, type, handler ) {
+			elem.removeEventListener(type, handler, false);
+		}
+	
+	});
 
+} else if (document.attachEvent) {
+
+
+	/**
+	 * The Handler prototype.
+	 */
+	var Handler = {
+		
+		/**
+		 * Remove the handler from the object to which it was previously attached.
+		 */
+		remove: function remove() {
+			return this.elem.detachEvent("on" + this.type, this.callback);
+		}
+		
+	};
+	
+	hex.extend(hex, {
+	
+		/**
+		 * Adds an event handler to the supplied DOM element.
+		 * @param elem The DOM element to which to attach the event.
+		 * @param type String representing the type of event to hook (ex: "click").
+		 * @param handler Function to handle the event.
+		 * @return Handler instance .
+		 */
+		addEvent: function addEvent( elem, type, handler ) {
+			function callback() {
+				var e = window.event;
+				return handler.call(elem, hex.create(e, Event));
+			}
+			function remove(){
+				elem.detachEvent("on" + type, callback);
+				window.detachEvent("onunload", remove);
+			}
+			elem.attachEvent("on" + type, callback);
+			window.attachEvent("onunload", remove);
+			return hex.create(Handler, {
+				callback: callback,
+				elem: elem,
+				handler: handler,
+				type: type
+			});
+		},
+	
+		/**
+		 * Removes an event handler from the supplied DOM element.
+		 * @param elem The DOM element to which to remove the event.
+		 * @param type String representing the type of event to hook (ex: "click").
+		 * @param handler Function to remove.
+		 */
+		removeEvent: function removeEvent( elem, type, handler ) {
+			elem.detachEvent("on" + type, handler);
+		}
+	
+	});
+	
+}
+	
 })();
