@@ -105,7 +105,7 @@ test("hex.grid(hexagonal)", function() {
 	
 	// Center the root element.
 	var size = hex.size(elem);
-	grid.origin(size.x * 0.5, size.y * 0.5);
+	grid.reorient(size.x * 0.5, size.y * 0.5);
 	
 });
 
@@ -187,7 +187,7 @@ test("hex.grid(rectangular)", function() {
 	
 	// Center the root element.
 	var size = hex.size(elem);
-	grid.origin(size.x * 0.5, size.y * 0.5);
+	grid.reorient(size.x * 0.5, size.y * 0.5);
 	
 });
 

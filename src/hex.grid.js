@@ -37,34 +37,16 @@ var Grid = {
 	},
 	
 	/**
-	 * Get or set the origin position for the grid element.
-	 * @param x The horizontal position from the left in pixels (optional).
-	 * @param y The vertical position from the top in pixels (optional).
-	 * @return The old origin position.
+	 * Set the origin position for the grid element.
+	 * @param x The horizontal position from the left in pixels.
+	 * @param y The vertical position from the top in pixels.
 	 */
-	origin: function origin( x, y ) {
-	
-		// Determine current offset position of the origin
-		var
-			elempos = hex.position(this.elem),
-			rootpos = hex.position(this.root),
-			pos = {
-				x: rootpos.x - elempos.x,
-				y: rootpos.y - elempos.y
-			};
-		
-		// Set the origin position if requested
-		if (x !== undefined && y !== undefined) {
-			
-			x = +x;
-			y = +y;
-			this.root.style.left = x + "px";
-			this.root.style.top = y + "px";
-			this.elem.style.backgroundPosition = x + "px " + y + "px";
-			
-		}
-		
-		return pos;
+	reorient: function reorient( x, y ) {
+		this.origin.x = +x;
+		this.origin.y = +y;
+		this.root.style.left = x + "px";
+		this.root.style.top = y + "px";
+		this.elem.style.backgroundPosition = x + "px " + y + "px";
 	}
 
 };
@@ -110,7 +92,11 @@ hex.extend(hex, {
 		// Create the grid object
 		var g = hex.create(
 			Grid, {
-				events: {}
+				events: {},
+				origin: {
+					x: 0,
+					y: 0
+				}
 			},
 			grid[options.type],
 			options, {
@@ -120,7 +106,10 @@ hex.extend(hex, {
 		);
 		
 		// Keep track of the last tile hovered for mouseover purposes
-		var lastTile = { x: null, y: null };
+		var lastTile = {
+			x: null,
+			y: null
+		};
 		
 		// Keep track of the panning state
 		var pan = {
@@ -132,14 +121,29 @@ hex.extend(hex, {
 		// Handler for any mouse movement events
 		function mousemove(event) {
 		
+			var
+				// Determine whether the event happened inside the bounds of the grid element
+				inside = event.inside(elem),
+				
+				// Determine mouse position
+				mousepos = event.mousepos(elem),
+				pos = {
+					x: mousepos.x - g.origin.x,
+					y: mousepos.y - g.origin.y
+				};
+			
 			// Handle panning
 			// TODO: FIX ME!
-			if (false && pan.panning) {
-				var mousepos = event.mousepos(root);
-				g.origin(
-					mousepos.x - pan.x,
-					mousepos.y - pan.y
-				);
+			if (pan.panning) {
+				if (inside) {
+					var
+						px = pos.x - pan.x,
+						py = pos.y - pan.y
+					root.style.left = px + "px";
+					root.style.top = py + "px";
+					elem.style.backgroundPosition = px + "px " + py + "px";
+				}
+				return;
 			}
 
 			// Short-circuit if there are no tile or grid events
@@ -151,17 +155,18 @@ hex.extend(hex, {
 			) return;
 			
 			var
-				// Determine whether the event happened inside the bounds of the grid element
-				inside = event.inside(elem),
-				
 				timeout = 10,
 				tileover = g.events.tileover,
 				tileout = g.events.tileout,
 				gridover = g.events.gridover,
 				gridout = g.events.gridout,
 
-				// Determine the grid-centric coordinates of the latest hovered tile
-				pos = event.mousepos(g.root),
+				// Determine the grid-centric coordinates of the latest actioned tile
+				mousepos = event.mousepos(elem),
+				pos = {
+					x: mousepos.x - g.origin.x,
+					y: mousepos.y - g.origin.y
+				}
 				trans = g.translate(pos.x, pos.y);
 			
 			// Short-circuit if we're inside and there's nothing to do
@@ -240,8 +245,12 @@ hex.extend(hex, {
 				tileup = g.events.tileup,
 				tileclick = g.events.tileclick,
 
-				// Determine the grid-centric coordinates of the latest hovered tile
-				pos = event.mousepos(g.root),
+				// Determine the grid-centric coordinates of the latest actioned tile
+				mousepos = event.mousepos(elem),
+				pos = {
+					x: mousepos.x - g.origin.x,
+					y: mousepos.y - g.origin.y
+				}
 				trans = g.translate(pos.x, pos.y);
 
 			// Shorthand method for queuing up a callback
@@ -266,8 +275,8 @@ hex.extend(hex, {
 				
 				// Begin panning
 				pan.panning = true;
-				pan.x = pos.x;
-				pan.y = pos.y;
+				pan.x = pos.x - g.origin.x;
+				pan.y = pos.y - g.origin.y;
 				
 			} else if (event.type === "mouseup") {
 			
@@ -290,9 +299,10 @@ hex.extend(hex, {
 				downTile.y = null;
 
 				// Cease panning
+				g.reorient(pos.x - pan.x, pos.y - pan.y)
 				pan.panning = false;
-				pan.x = pos.x;
-				pan.y = pos.y;
+				pan.x = null;
+				pan.y = null;
 				
 			}
 			
