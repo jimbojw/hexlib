@@ -62,7 +62,9 @@ hex.extend(hex, {
 	grid: function grid( elem, options ) {
 		
 		// Confirm that an element was supplied
-		if (!elem || elem.nodeType !== 1) throw "no DOM element supplied";
+		if (!elem || elem.nodeType !== 1) {
+			throw "no DOM element supplied";
+		}
 		
 		// Combine options to default values
 		var options = hex.extend({}, Grid.defaults, options);
