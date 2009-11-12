@@ -24,37 +24,29 @@ test("hex.grid()", function() {
 	
 });
 
-test("grid.origin()", function() {
+test("grid.reorient()", function() {
 	expect(0);
 	// TODO: Add tests!
 });
 
-test("hex.grid(hexagonal)", function() {
-	
-	expect(1);
-	
-	// Preparing the element	
-	var elem = document.getElementById("hexagonal-grid");
-	
-	// Creating a grid
-	var grid = hex.grid(elem);
-	ok(grid, "hex.grid(elem)");
+// Add markers and other DOM goodies to grids
+function setupGrid( grid ) {
 	
 	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
-	prev.style.border = "2px solid yellow";
-	prev.style.width = (grid.tileWidth - 4) + "px";
-	prev.style.height = (grid.tileHeight - 2) + "px";
+	prev.style.border = "4px outset yellow";
+	prev.style.width = (grid.tileWidth - 7) + "px";
+	prev.style.height = (grid.tileHeight - 7) + "px";
 	prev.style.display = "none";
 	grid.root.appendChild(prev);
 	
 	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
-	curr.style.border = "2px solid green";
-	curr.style.width = (grid.tileWidth - 4) + "px";
-	curr.style.height = (grid.tileHeight - 2) + "px";
+	curr.style.border = "4px outset green";
+	curr.style.width = (grid.tileWidth - 7) + "px";
+	curr.style.height = (grid.tileHeight - 7) + "px";
 	curr.style.display = "none";
 	grid.root.appendChild(curr);
 	
@@ -107,8 +99,24 @@ test("hex.grid(hexagonal)", function() {
 	});
 	
 	// Center the root element.
-	var size = hex.size(elem);
+	var size = hex.size(grid.elem);
 	grid.reorient(size.x * 0.5, size.y * 0.5);
+	
+}
+
+test("hex.grid(hexagonal)", function() {
+	
+	expect(1);
+	
+	// Preparing the element
+	var elem = document.getElementById("hexagonal-grid");
+	
+	// Creating a grid
+	var grid = hex.grid(elem);
+	ok(grid, "hex.grid(elem)");
+	
+	// Additional setup steps
+	setupGrid(grid);
 	
 });
 
@@ -116,84 +124,31 @@ test("hex.grid(rectangular)", function() {
 	
 	expect(1);
 	
-	// Preparing the element	
+	// Preparing the element
 	var elem = document.getElementById("rectangular-grid");
 	
 	// Creating a grid
 	var grid = hex.grid(elem, { type: "rectangular" });
 	ok(grid, "hex.grid(elem, {type:'rectangular'})");
 	
-	// Element to show the previously hovered tile
-	var prev = document.createElement("div");
-	prev.style.position = "absolute";
-	prev.style.border = "2px solid yellow";
-	prev.style.width = (grid.tileWidth - 5) + "px";
-	prev.style.height = (grid.tileHeight - 5) + "px";
-	prev.style.margin = "1px 0 0 1px";
-	prev.style.display = "none";
-	grid.root.appendChild(prev);
+	// Additional setup steps
+	setupGrid(grid);
 	
-	// Element to show the currently hovered tile
-	var curr = document.createElement("div");
-	curr.style.position = "absolute";
-	curr.style.border = "2px solid green";
-	curr.style.width = (grid.tileWidth - 5) + "px";
-	curr.style.height = (grid.tileHeight - 5) + "px";
-	curr.style.margin = "1px 0 0 1px";
-	curr.style.display = "none";
-	grid.root.appendChild(curr);
+});
+
+test("hex.grid(skew)", function() {
 	
-	// Extra element to show the origin
-	var marker = document.createElement("div");
-	marker.innerHTML = "<!-- -->";
-	marker.style.position = "absolute";
-	marker.style.border = "5px ridge red";
-	marker.style.height = "0px";
-	marker.style.width = "0px";
-	marker.style.left = "-5px";
-	marker.style.top = "-5px";
-	grid.root.appendChild(marker);
+	expect(1);
 	
-	// Setting mouse movement related tile events
-	grid.addEvent("tileover", function(x, y) {
-		hex.log([x, y], "tileover");
-		var inv = grid.screenpos(x, y);
-		curr.style.left = inv.x + "px";
-		curr.style.top = inv.y + "px";
-	});
-	grid.addEvent("tileout", function(x, y) {
-		hex.log([x, y], "tileout");
-		var inv = grid.screenpos(x, y);
-		prev.style.left = inv.x + "px";
-		prev.style.top = inv.y + "px";
-	});
+	// Preparing the element
+	var elem = document.getElementById("skew-grid");
 	
-	// Setting mouse button related tile events
-	grid.addEvent("tiledown", function(x, y) {
-		hex.log([x, y], "tiledown");
-	});
-	grid.addEvent("tileup", function(x, y) {
-		hex.log([x, y], "tileup");
-	});
-	grid.addEvent("tileclick", function(x, y) {
-		hex.log([x, y], "tileclick");
-	});
+	// Creating a grid
+	var grid = hex.grid(elem, { type: "skew" });
+	ok(grid, "hex.grid(elem, {type:'skew'})");
 	
-	// Setting mouse movement related grid events
-	grid.addEvent("gridover", function(x, y) {
-		hex.log([x, y], "gridover");
-		curr.style.display = "";
-		prev.style.display = "";
-	});
-	grid.addEvent("gridout", function(x, y) {
-		hex.log([x, y], "gridout");
-		curr.style.display = "none";
-		prev.style.display = "none";
-	});
-	
-	// Center the root element.
-	var size = hex.size(elem);
-	grid.reorient(size.x * 0.5, size.y * 0.5);
+	// Additional setup steps
+	setupGrid(grid);
 	
 });
 
