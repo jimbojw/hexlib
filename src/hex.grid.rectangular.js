@@ -12,7 +12,7 @@ var
 
 /**
  * The rectangular grid prototype.
- */	
+ */
 hex.grid.rectangular = {
 	
 	/**
@@ -47,7 +47,7 @@ hex.grid.rectangular = {
 			y: ceil( -posy / this.tileHeight )
 		};
 	}
-
+	
 };
 
 })();

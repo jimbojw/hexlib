@@ -11,7 +11,7 @@ var
 
 /**
  * The hexagonal grid prototype.
- */	
+ */
 hex.grid.hexagonal = {
 	
 	/**
@@ -57,7 +57,7 @@ hex.grid.hexagonal = {
 	 * @return An object with an x and y property, mapping to the geometry appropriate coordinates of the grid.
 	 */
 	translate: function translate( posx, posy ) {
-
+		
 		// Useful shorthand values
 		var
 			w2 = this.tileWidth * 0.5,
@@ -66,7 +66,7 @@ hex.grid.hexagonal = {
 			h = this.tileHeight,
 			h2 = h * 0.5,
 			m = h2 / w4;
-	
+		
 		// Determine the "quadrant" in which the click occurred (there are two types, as discussed later)
 		var
 			q = this.quadrant( posx, posy ),
@@ -80,41 +80,41 @@ hex.grid.hexagonal = {
 		if (px < 0) px += w34;
 		if (py < 0) py += h;
 		px -= w2;
-	
+		
 		// Mode determined by x quadrant
 		if (qx % 2) {
-	
+			
 			// |_/|  A-type quadrant
 			// | \|
-		
+			
 			// Start with simple cases
 			var
 				x = qx,
 				y = (1 - qx) * 0.5 - qy - (py > h2 ? 1 : 0);
 			if ( px <= 0 || py == h2 ) return { x: x, y: y };
-		
+			
 			// Make adjustments if click happend in right-hand third of the quadrant
 			if ( py < h2 && py > ( h2 - px * m ) ) return { x: x+1, y: y-1 };
 			if ( py > h2 && py < ( h2 + px * m ) ) return { x: x+1, y: y };
-		
+			
 		} else {
-	
+			
 			// | \|  B-type quadrant
 			// | /|
-		
+			
 			// Start with simple case
 			var
 				x = qx,
 				y = -qx * 0.5 - qy;
 			if ( px <= 0 || py == h2 ) return { x: x, y: y };
-
+			
 			// Make adjusments if the click happend in the latter third
 			if ( py < h2 && py < px * m ) return { x: x+1, y: y };
 			if ( py > h2 && py > ( h - px * m ) ) return { x: x+1, y: y-1 };
 		}
-	
+		
 		return { x: x, y: y };
-	
+		
 	}
 
 };

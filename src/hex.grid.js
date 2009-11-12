@@ -10,7 +10,7 @@ var
 
 /**
  * The Grid prototype.
- */	
+ */
 var Grid = {
 	
 	/**

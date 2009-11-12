@@ -11,17 +11,17 @@ test("hex.grid()", function() {
 	
 	// Basic availability
 	ok(hex.grid, "hex.grid");
-
+	
 	// Throws when missing required fields
 	throwing(function() {
 		hex.grid();
 	}, "no DOM element supplied", "hex.grid()");
-
+	
 	// Throws when bad options are passed
 	throwing(function() {
 		hex.grid( { nodeType: 1 }, { type: "nosuchtype" } );
 	}, "hex.grid.nosuchtype does not exist", "hex.grid(type:nosuchtype)");
-
+	
 });
 
 test("grid.origin()", function() {
@@ -35,11 +35,11 @@ test("hex.grid(hexagonal)", function() {
 	
 	// Preparing the element	
 	var elem = document.getElementById("hexagonal-grid");
-
+	
 	// Creating a grid
 	var grid = hex.grid(elem);
 	ok(grid, "hex.grid(elem)");
-
+	
 	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
@@ -48,7 +48,7 @@ test("hex.grid(hexagonal)", function() {
 	prev.style.height = (grid.tileHeight - 2) + "px";
 	prev.style.display = "none";
 	grid.root.appendChild(prev);
-
+	
 	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
@@ -57,7 +57,7 @@ test("hex.grid(hexagonal)", function() {
 	curr.style.height = (grid.tileHeight - 2) + "px";
 	curr.style.display = "none";
 	grid.root.appendChild(curr);
-
+	
 	// Extra element to mark the origin
 	var marker = document.createElement("div");
 	marker.innerHTML = "<!-- -->";
@@ -82,7 +82,7 @@ test("hex.grid(hexagonal)", function() {
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
 	});
-
+	
 	// Setting mouse button related tile events
 	grid.addEvent("tiledown", function(x, y) {
 		hex.log([x, y], "tiledown");
@@ -93,7 +93,7 @@ test("hex.grid(hexagonal)", function() {
 	grid.addEvent("tileclick", function(x, y) {
 		hex.log([x, y], "tileclick");
 	});
-
+	
 	// Setting mouse movement related grid events
 	grid.addEvent("gridover", function(x, y) {
 		hex.log([x, y], "gridover");
@@ -118,11 +118,11 @@ test("hex.grid(rectangular)", function() {
 	
 	// Preparing the element	
 	var elem = document.getElementById("rectangular-grid");
-
+	
 	// Creating a grid
 	var grid = hex.grid(elem, { type: "rectangular" });
 	ok(grid, "hex.grid(elem, {type:'rectangular'})");
-
+	
 	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
@@ -132,7 +132,7 @@ test("hex.grid(rectangular)", function() {
 	prev.style.margin = "1px 0 0 1px";
 	prev.style.display = "none";
 	grid.root.appendChild(prev);
-
+	
 	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
@@ -142,7 +142,7 @@ test("hex.grid(rectangular)", function() {
 	curr.style.margin = "1px 0 0 1px";
 	curr.style.display = "none";
 	grid.root.appendChild(curr);
-
+	
 	// Extra element to show the origin
 	var marker = document.createElement("div");
 	marker.innerHTML = "<!-- -->";
@@ -153,7 +153,7 @@ test("hex.grid(rectangular)", function() {
 	marker.style.left = "-5px";
 	marker.style.top = "-5px";
 	grid.root.appendChild(marker);
-
+	
 	// Setting mouse movement related tile events
 	grid.addEvent("tileover", function(x, y) {
 		hex.log([x, y], "tileover");
@@ -167,7 +167,7 @@ test("hex.grid(rectangular)", function() {
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
 	});
-
+	
 	// Setting mouse button related tile events
 	grid.addEvent("tiledown", function(x, y) {
 		hex.log([x, y], "tiledown");
@@ -178,7 +178,7 @@ test("hex.grid(rectangular)", function() {
 	grid.addEvent("tileclick", function(x, y) {
 		hex.log([x, y], "tileclick");
 	});
-
+	
 	// Setting mouse movement related grid events
 	grid.addEvent("gridover", function(x, y) {
 		hex.log([x, y], "gridover");
@@ -196,5 +196,4 @@ test("hex.grid(rectangular)", function() {
 	grid.reorient(size.x * 0.5, size.y * 0.5);
 	
 });
-
 
