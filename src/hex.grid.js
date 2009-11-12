@@ -6,6 +6,7 @@
 var
 	undefined,
 	window = this,
+	document = window.document,
 	hex = window.hex;
 
 /**
@@ -240,6 +241,10 @@ hex.extend(hex, {
 			// Short-circuit if the event happened outside the bounds of the grid element.
 			if (!event.inside(elem)) return;
 			
+			// Prevent the default event action
+			// NOTE: This prevents/disables browser-native dragging of child elements
+			event.preventDefault();
+			
 			// Determine the mouse event coordinates
 			var mousepos = event.mousepos(elem);
 			
@@ -328,6 +333,22 @@ hex.extend(hex, {
 		// Add DOM event handlers to grid element for mouse movement
 		hex.addEvent(elem, "mousedown", mousebutton);
 		hex.addEvent(elem, "mouseup", mousebutton);
+		
+		// A mouseup event anywhere on the document should cease panning and clear the mousedown target
+		hex.addEvent(document, "mouseup", function(){
+			if (pan.panning) {
+				g.reorient(
+					parseInt( root.style.left ),
+					parseInt( root.style.top )
+				);
+				pan.panning = false;
+				pan.x = null;
+				pan.y = null;
+				elem.style.cursor = "";
+			}
+			downTile.x = null;
+			downTile.y = null;
+		});
 		
 		// Perform initialization if grid supports it
 		if (g.init) {

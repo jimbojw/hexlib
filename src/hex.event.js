@@ -152,7 +152,12 @@ if (document.addEventListener) {
 		addEvent: function addEvent( elem, type, handler ) {
 			function callback() {
 				var e = window.event;
-				return handler.call(elem, hex.extend({}, e, Event, {event: e}));
+				return handler.call(elem, hex.extend({}, e, Event, {
+					event: e,
+					preventDefault: function preventDefault() {
+						e.returnValue = false;
+					}
+				}));
 			}
 			function remove(){
 				elem.detachEvent("on" + type, callback);
