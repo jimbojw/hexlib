@@ -75,7 +75,6 @@ hex.grid.skew = {
 			if (ys[i] > maxy) maxy = ys[i];
 			if (ys[i] < miny) miny = ys[i];
 		}
-		hex.log([minx, maxx, miny, maxy]);
 		
 		// Set the offset and tile sizes accordingly
 		this.tileWidth = maxx - minx;
