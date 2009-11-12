@@ -30,7 +30,7 @@ var Grid = {
 	 * Default option values.
 	 */
 	defaults: {
-	
+		
 		// Type of grid to construct.
 		type: "hexagonal"
 		
@@ -48,9 +48,9 @@ var Grid = {
 		this.root.style.top = y + "px";
 		this.elem.style.backgroundPosition = x + "px " + y + "px";
 	}
-
-};
 	
+};
+
 hex.extend(hex, {
 	
 	/**
@@ -70,7 +70,7 @@ hex.extend(hex, {
 		var options = hex.extend({}, Grid.defaults, options);
 		
 		// Check that the particular grid type provides all reqired functions
-		if (grid[options.type] === undefined) {
+		if (hex.grid[options.type] === undefined) {
 			throw "hex.grid." + options.type + " does not exist";
 		}
 		
@@ -100,7 +100,7 @@ hex.extend(hex, {
 					y: 0
 				}
 			},
-			grid[options.type],
+			hex.grid[options.type],
 			options, {
 				elem: elem,
 				root: root
@@ -122,7 +122,7 @@ hex.extend(hex, {
 		
 		// Handler for any mouse movement events
 		function mousemove(event) {
-		
+			
 			var
 				// Determine whether the event happened inside the bounds of the grid element
 				inside = event.inside(elem),
@@ -135,7 +135,6 @@ hex.extend(hex, {
 				};
 			
 			// Handle panning
-			// TODO: FIX ME!
 			if (pan.panning) {
 				if (inside) {
 					var
@@ -147,7 +146,7 @@ hex.extend(hex, {
 				}
 				return;
 			}
-
+			
 			// Short-circuit if there are no tile or grid events
 			if (
 				!g.events.tileover &&
@@ -162,7 +161,7 @@ hex.extend(hex, {
 				tileout = g.events.tileout,
 				gridover = g.events.gridover,
 				gridout = g.events.gridout,
-
+				
 				// Determine the grid-centric coordinates of the latest actioned tile
 				mousepos = event.mousepos(elem),
 				pos = {
@@ -181,47 +180,47 @@ hex.extend(hex, {
 					callback.apply(null, args);
 				}, timeout++);
 			}
-				
+			
 			// Queue up tileout callbacks if there are any
 			if (tileout && lastTile.x !== null && lastTile.y !== null) {
 				for (var i=0, l=tileout.length; i<l; i++) {
 					queue(tileout[i], [lastTile.x, lastTile.y]);
 				}
 			}
-
+			
 			// Queue up gridout callbacks if applicable
 			if (!inside && gridout && lastTile.x !== null && lastTile.y !== null) {
 				for (var i=0, l=gridout.length; i<l; i++) {
 					queue(gridout[i], [lastTile.x, lastTile.y]);
 				}
 			}
-
+			
 			if (inside) {
-
+				
 				// Queue up gridover callbacks if applicable
 				if (gridover && lastTile.x === null && lastTile.y === null) {
 					for (var i=0, l=gridover.length; i<l; i++) {
 						queue(gridover[i], [trans.x, trans.y]);
 					}
 				}
-
+				
 				// Queue up tileover callbacks if there are any
 				if (tileover) {
 					for (var i=0, l=tileover.length; i<l; i++) {
 						queue(tileover[i], [trans.x, trans.y]);
 					}
 				}
-			
+				
 				lastTile.x = trans.x;
 				lastTile.y = trans.y;
-
+				
 			} else {
-
+				
 				lastTile.x = null;
 				lastTile.y = null;
-
+				
 			}
-
+		
 		}
 		
 		// Add DOM event handlers to grid element for mouse movement
@@ -230,31 +229,58 @@ hex.extend(hex, {
 		hex.addEvent(elem, "mouseout", mousemove);
 		
 		// Keep track of last tile mousedown'ed on
-		var downTile = { x: null, y: null };
-
+		var downTile = {
+			x: null, 
+			y: null
+		};
+		
 		// Handler for any mouse button events
 		function mousebutton(event) {
-		
-			// Short-circuit if there are no tiledown, tileup or tileclick events
-			if (!g.events.tiledown && !g.events.tileup && !g.events.tileclick) return;
 			
 			// Short-circuit if the event happened outside the bounds of the grid element.
 			if (!event.inside(elem)) return;
-				
+			
+			// Determine the mouse event coordinates
+			var mousepos = event.mousepos(elem);
+			
+			// Begin panning
+			if (!pan.panning && event.type === "mousedown") {
+				pan.panning = true;
+				pan.x = mousepos.x - g.origin.x - g.origin.x;
+				pan.y = mousepos.y - g.origin.y - g.origin.y;
+				elem.style.cursor = "move";
+			}
+			
+			// Cease panning
+			if (pan.panning && event.type === "mouseup") {
+				g.reorient(
+					mousepos.x - g.origin.x - pan.x,
+					mousepos.y - g.origin.y - pan.y
+				);
+				pan.panning = false;
+				pan.x = null;
+				pan.y = null;
+				elem.style.cursor = "";
+			}
+			
+			// Short-circuit if there are no tiledown, tileup or tileclick event handlers
+			if (!g.events.tiledown && !g.events.tileup && !g.events.tileclick) return;
+			
 			var
-				timeout = 10,
-				tiledown = g.events.tiledown,
-				tileup = g.events.tileup,
-				tileclick = g.events.tileclick,
-
-				// Determine the grid-centric coordinates of the latest actioned tile
-				mousepos = event.mousepos(elem),
+				// Adjusted mouse position
 				pos = {
 					x: mousepos.x - g.origin.x,
 					y: mousepos.y - g.origin.y
-				}
-				trans = g.translate(pos.x, pos.y);
-
+				},
+				
+				// Grid-centric coordinates of the latest actioned tile
+				trans = g.translate(pos.x, pos.y),
+				
+				timeout = 10,
+				tiledown = g.events.tiledown,
+				tileup = g.events.tileup,
+				tileclick = g.events.tileclick;
+			
 			// Shorthand method for queuing up a callback
 			function queue(callback, args) {
 				return setTimeout(function(){
@@ -263,7 +289,7 @@ hex.extend(hex, {
 			}
 				
 			if (event.type === "mousedown") {
-
+				
 				// Queue up tiledown callbacks
 				if (tiledown) {
 					for (var i=0, l=tiledown.length; i<l; i++) {
@@ -275,20 +301,15 @@ hex.extend(hex, {
 				downTile.x = trans.x;
 				downTile.y = trans.y;
 				
-				// Begin panning
-				pan.panning = true;
-				pan.x = pos.x - g.origin.x;
-				pan.y = pos.y - g.origin.y;
-				
 			} else if (event.type === "mouseup") {
-			
+				
 				// Queue up tileup callbacks
 				if (tileup) {
 					for (var i=0, l=tileup.length; i<l; i++) {
 						queue(tileup[i], [trans.x, trans.y]);
 					}
 				}
-
+				
 				// Queue up tileclick callbacks
 				if (tileclick && downTile.x === trans.x && downTile.y === trans.y) {
 					for (var i=0, l=tileclick.length; i<l; i++) {
@@ -299,21 +320,15 @@ hex.extend(hex, {
 				// Clear mousedown target
 				downTile.x = null;
 				downTile.y = null;
-
-				// Cease panning
-				g.reorient(pos.x - pan.x, pos.y - pan.y)
-				pan.panning = false;
-				pan.x = null;
-				pan.y = null;
 				
 			}
 			
 		}
-
+		
 		// Add DOM event handlers to grid element for mouse movement
 		hex.addEvent(elem, "mousedown", mousebutton);
 		hex.addEvent(elem, "mouseup", mousebutton);
-
+		
 		return g;
 	}
 	

@@ -11,7 +11,7 @@ var
 
 /**
  * The rich Event "prototype".
- */	
+ */
 var Event = {
 	
 	/**
@@ -36,7 +36,7 @@ var Event = {
 			pos = this.mousepos(),
 			position = hex.position(elem),
 			size = hex.size(elem);
-
+		
 		// Determine whether the event happened inside the bounds of the element
 		return (
 			pos.x > position.x &&
@@ -45,7 +45,7 @@ var Event = {
 			pos.y < position.y + size.y
 		);
 	},
-
+	
 	/**
 	 * Determine the screen coordinates for a mouse event (click, mouseover, etc).
 	 * @see http://www.quirksmode.org/js/events_properties.html#position
@@ -53,7 +53,9 @@ var Event = {
 	 * @return Object with an x and y property for the screen location in pixels.
 	 */
 	mousepos: function mousepos( elem ) {
-		var x = 0, y = 0;
+		var
+			x = 0,
+			y = 0;
 		if (this.pageX !== undefined && this.pageY !== undefined) {
 			x = this.pageX;
 			y = this.pageY;
@@ -68,7 +70,7 @@ var Event = {
 		}
 		return { x: x, y: y };
 	}
-
+	
 };
 
 if (document.addEventListener) {
@@ -88,7 +90,7 @@ if (document.addEventListener) {
 	};
 	
 	hex.extend(hex, {
-	
+		
 		/**
 		 * Adds an event handler to the supplied DOM element.
 		 * @param elem The DOM element to which to attach the event.
@@ -98,7 +100,7 @@ if (document.addEventListener) {
 		 */
 		addEvent: function addEvent( elem, type, handler ) {
 			function callback(e) {
-				return handler.call(elem, hex.create(e, Event));
+				return handler.call(elem, hex.create(e, Event, {event : e}));
 			}
 			elem.addEventListener(type, callback, false);
 			return hex.create(Handler, {
@@ -108,7 +110,7 @@ if (document.addEventListener) {
 				type: type
 			});
 		},
-	
+		
 		/**
 		 * Removes an event handler from the supplied DOM element.
 		 * @param elem The DOM element to which to remove the event.
@@ -118,12 +120,12 @@ if (document.addEventListener) {
 		removeEvent: function removeEvent( elem, type, handler ) {
 			elem.removeEventListener(type, handler, false);
 		}
-	
+		
 	});
-
+	
 } else if (document.attachEvent) {
-
-
+	
+	
 	/**
 	 * The Handler prototype.
 	 */
@@ -139,7 +141,7 @@ if (document.addEventListener) {
 	};
 	
 	hex.extend(hex, {
-	
+		
 		/**
 		 * Adds an event handler to the supplied DOM element.
 		 * @param elem The DOM element to which to attach the event.
@@ -150,7 +152,7 @@ if (document.addEventListener) {
 		addEvent: function addEvent( elem, type, handler ) {
 			function callback() {
 				var e = window.event;
-				return handler.call(elem, hex.create(e, Event));
+				return handler.call(elem, hex.extend({}, e, Event, {event: e}));
 			}
 			function remove(){
 				elem.detachEvent("on" + type, callback);
@@ -165,7 +167,7 @@ if (document.addEventListener) {
 				type: type
 			});
 		},
-	
+		
 		/**
 		 * Removes an event handler from the supplied DOM element.
 		 * @param elem The DOM element to which to remove the event.
@@ -175,9 +177,9 @@ if (document.addEventListener) {
 		removeEvent: function removeEvent( elem, type, handler ) {
 			elem.detachEvent("on" + type, handler);
 		}
-	
+		
 	});
 	
 }
-	
+
 })();

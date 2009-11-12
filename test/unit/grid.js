@@ -43,7 +43,7 @@ test("hex.grid(hexagonal)", function() {
 	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
-	prev.style.border = "2px solid yellow"
+	prev.style.border = "2px solid yellow";
 	prev.style.width = (grid.tileWidth - 4) + "px";
 	prev.style.height = (grid.tileHeight - 2) + "px";
 	prev.style.display = "none";
@@ -52,7 +52,7 @@ test("hex.grid(hexagonal)", function() {
 	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
-	curr.style.border = "2px solid green"
+	curr.style.border = "2px solid green";
 	curr.style.width = (grid.tileWidth - 4) + "px";
 	curr.style.height = (grid.tileHeight - 2) + "px";
 	curr.style.display = "none";
@@ -61,7 +61,9 @@ test("hex.grid(hexagonal)", function() {
 	// Extra element to mark the origin
 	var marker = document.createElement("div");
 	marker.style.position = "absolute";
-	marker.style.border = "5px ridge red"
+	marker.style.border = "5px ridge red";
+	marker.style.height = "0px";
+	marker.style.width = "0px";
 	marker.style.left = "-5px";
 	marker.style.top = "-5px";
 	grid.root.appendChild(marker);
@@ -123,7 +125,7 @@ test("hex.grid(rectangular)", function() {
 	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.position = "absolute";
-	prev.style.border = "2px solid yellow"
+	prev.style.border = "2px solid yellow";
 	prev.style.width = (grid.tileWidth - 5) + "px";
 	prev.style.height = (grid.tileHeight - 5) + "px";
 	prev.style.margin = "1px 0 0 1px";
@@ -133,7 +135,7 @@ test("hex.grid(rectangular)", function() {
 	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.position = "absolute";
-	curr.style.border = "2px solid green"
+	curr.style.border = "2px solid green";
 	curr.style.width = (grid.tileWidth - 5) + "px";
 	curr.style.height = (grid.tileHeight - 5) + "px";
 	curr.style.margin = "1px 0 0 1px";
@@ -143,7 +145,9 @@ test("hex.grid(rectangular)", function() {
 	// Extra element to show the origin
 	var marker = document.createElement("div");
 	marker.style.position = "absolute";
-	marker.style.border = "5px ridge red"
+	marker.style.border = "5px ridge red";
+	marker.style.height = "0px";
+	marker.style.width = "0px";
 	marker.style.left = "-5px";
 	marker.style.top = "-5px";
 	grid.root.appendChild(marker);
