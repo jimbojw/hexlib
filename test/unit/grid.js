@@ -60,6 +60,7 @@ test("hex.grid(hexagonal)", function() {
 
 	// Extra element to mark the origin
 	var marker = document.createElement("div");
+	marker.innerHTML = "<!-- -->";
 	marker.style.position = "absolute";
 	marker.style.border = "5px ridge red";
 	marker.style.height = "0px";
@@ -144,6 +145,7 @@ test("hex.grid(rectangular)", function() {
 
 	// Extra element to show the origin
 	var marker = document.createElement("div");
+	marker.innerHTML = "<!-- -->";
 	marker.style.position = "absolute";
 	marker.style.border = "5px ridge red";
 	marker.style.height = "0px";
