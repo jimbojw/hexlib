@@ -329,6 +329,11 @@ hex.extend(hex, {
 		hex.addEvent(elem, "mousedown", mousebutton);
 		hex.addEvent(elem, "mouseup", mousebutton);
 		
+		// Perform initialization if grid supports it
+		if (g.init) {
+			g.init();
+		}
+		
 		return g;
 	}
 	
