@@ -21,8 +21,7 @@ var Event = {
 	getTarget: function getTarget() {
 		var t = this.target || this.srcElement;
 		if (!t) return undefined;
-		if (t.nodeType === 3) t = t.parentNode;
-		return t;
+		return ( t.nodeType === 3 ? t.parentNode : t );
 	},
 	
 	/**
@@ -69,6 +68,18 @@ var Event = {
 			y = y - pos.y;
 		}
 		return { x: x, y: y };
+	},
+	
+	/**
+	 * Prevent the browser default action.
+	 */
+	preventDefault: function preventDefault() {
+		var e = this.event;
+		if (e.preventDefault) {
+			e.preventDefault();
+		} else {
+			e.returnValue = false;
+		}
 	}
 	
 };
@@ -152,12 +163,7 @@ if (document.addEventListener) {
 		addEvent: function addEvent( elem, type, handler ) {
 			function callback() {
 				var e = window.event;
-				return handler.call(elem, hex.extend({}, e, Event, {
-					event: e,
-					preventDefault: function preventDefault() {
-						e.returnValue = false;
-					}
-				}));
+				return handler.call(elem, hex.extend({}, e, Event, { event: e }));
 			}
 			function remove(){
 				elem.detachEvent("on" + type, callback);
