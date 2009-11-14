@@ -158,3 +158,19 @@ test("hex.grid(skew)", function() {
 	
 });
 
+test("hex.grid(triangular)", function() {
+	
+	expect(1);
+	
+	// Preparing the element
+	var elem = document.getElementById("triangular-grid");
+	
+	// Creating a grid
+	var grid = hex.grid(elem, { type: "triangular" });
+	ok(grid, "hex.grid(elem, {type:'triangular'})");
+	
+	// Additional setup steps
+	setupGrid(grid);
+	
+});
+

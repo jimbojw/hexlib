@@ -4,6 +4,8 @@
 
 #test-content {
 	/* display: none; */
+	width: 600px;
+	float: right;
 }
 
 .grid-test {
@@ -23,5 +25,9 @@
 
 #skew-grid {
 	background-image: url(../graphics/background/vertical-diamond-grid-42x72.png);
+}
+
+#triangular-grid {
+	background-image: url(../graphics/background/vertical-triangle-grid-56x96.png);
 }
 
