@@ -34,6 +34,8 @@ function setupGrid( grid ) {
 	
 	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
+	prev.style.textAlign = "center";
+	prev.style.lineHeight = grid.tileHeight + "px";
 	prev.style.position = "absolute";
 	prev.style.border = "4px outset yellow";
 	prev.style.width = (grid.tileWidth - 7) + "px";
@@ -43,6 +45,8 @@ function setupGrid( grid ) {
 	
 	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
+	curr.style.textAlign = "center";
+	curr.style.lineHeight = grid.tileHeight + "px";
 	curr.style.position = "absolute";
 	curr.style.border = "4px outset green";
 	curr.style.width = (grid.tileWidth - 7) + "px";
@@ -67,12 +71,14 @@ function setupGrid( grid ) {
 		var inv = grid.screenpos(x, y);
 		curr.style.left = inv.x + "px";
 		curr.style.top = inv.y + "px";
+		curr.innerHTML = [x, y] + '';
 	});
 	grid.addEvent("tileout", function(x, y) {
 		hex.log([x, y], "tileout");
 		var inv = grid.screenpos(x, y);
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
+		prev.innerHTML = [x, y] + '';
 	});
 	
 	// Setting mouse button related tile events
