@@ -11,29 +11,52 @@ var
 
 /**
  * The triangular grid prototype.
+ * 
+ * Coordinate explanation:
+ * 
+ *    |/   \ /   \ /   \ /  
+ *    |-----;-----;-----;-    y
+ *    |-1,1/ \1,1/ \   /     / 
+ *    | \ /0,1\ /2,1\ /     /
+ *    |--;-----;-----;-----;
+ *    | / \1,0/ \3,0/ \   / 
+ *    |/0,0\ /2,0\ /4,0\ /  
+ *    +-----^-----^-----^-----> x
  */
 hex.grid.triangular = {
 	
 	/**
-	 * Tile characteristics, denoted as the two vectors pointing away from the origin.
-	 * See hex.grid.skew.js for more info.
+	 * Tile characteristics.
 	 */
-	e1: {
-		x: 28,  //   \ <-- origin
-		y: -48  //    \. 
-	},
-	e2: {
-		x: -28, //    / <-- origin
-		y: -48  //  ,/
-	},
+	tileHeight: 48,
+	tileWidth: 56,
 	
 	/**
 	 * Initialize precomputed values.
 	 */
 	init: function init() {
 		
+		var
+			h = this.tileHeight,
+			w = this.tileWidth;
+		
+		// Express tile characteristics as the two vectors pointing away from the origin.
+		// See hex.grid.skew.js for more info.
+		this.e1 = {
+			x: w,        //   |  
+			y: 0         //  ,+---> e1
+		};
+		this.e2 = {
+			x: w * 0.5,  //    / e2
+			y: -h        //  ,/___
+		};
+		
+		// Call skew grid initializer
 		hex.grid.skew.init.call(this);
-		this.tileHeight = this.tileHeight * 0.5;
+		
+		// Reset tileHeight and tileWidth (skew.init may have modified them)
+		this.tileHeight = h;
+		this.tileWidth = w;
 		
 	},
 	
@@ -44,19 +67,11 @@ hex.grid.triangular = {
 	 * @return An object with an x and y property, mapping to the actual screen coordinates.
 	 */
 	screenpos: function screenpos( x, y ) {
-		var
-			skewpos = hex.grid.skew.screenpos.call(this, x * 0.5, y),
-			mod = x % 2,
-			xd = mod ? -this.tileWidth * 0.25 : 0;
-			yd = mod ? this.tileHeight * 0.5 : this.tileHeight;
-		return {
-			x: skewpos.x + xd,
-			y: skewpos.y + yd
-		};
+		return hex.grid.skew.screenpos.call(this, x * 0.5, y);
 	},
 	
 	/**
-	 * Translate a pair of x/y screen coordinates into skew grid coordinates.
+	 * Translate a pair of x/y screen coordinates into triangular grid coordinates.
 	 * @param x The horizontal screen coordinate.
 	 * @param y The vertical screen coordinate.
 	 * @return An object with an x and y property, mapping to the geometry appropriate coordinates of the grid.
