@@ -46,11 +46,11 @@ hex.extend(hex, {
 				handlers = this.events[type],
 				args = slice.call(arguments, 2);
 			for (var i=0, l=handlers.length; i<l; i++) {
-				(function(callback, args){
+				(function(self, callback, args){
 					setTimeout(function(){
-						callback.apply(null, args);
+						callback.apply(self, args);
 					}, timeout++);
-				})(handlers[i], args);
+				})(this, handlers[i], args);
 			}
 			return timeout;
 		}
