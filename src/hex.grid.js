@@ -334,20 +334,49 @@ hex.extend(hex, {
 		hex.addEvent(elem, "mousedown", mousebutton);
 		hex.addEvent(elem, "mouseup", mousebutton);
 		
-		// A mouseup event anywhere on the document should cease panning and clear the mousedown target
-		hex.addEvent(document, "mouseup", function(){
-			if (pan.panning) {
-				g.reorient(
-					parseInt( root.style.left ),
-					parseInt( root.style.top )
-				);
-				pan.panning = false;
-				pan.x = null;
-				pan.y = null;
-				elem.style.cursor = "";
+		// A mouseup event anywhere on the document outside the grid element while panning should:
+		// * cease panning,
+		// * fire a gridout event, and
+		// * clear the mousedown and lasttile targets
+		hex.addEvent(document, "mouseup", function(event){
+			
+			// We only care about the mouseup event if the user was panning
+			if (!pan.panning) return;
+			
+			// Reorient the board, and cease panning
+			g.reorient(
+				parseInt( root.style.left ),
+				parseInt( root.style.top )
+			);
+			pan.panning = false;
+			pan.x = null;
+			pan.y = null;
+			elem.style.cursor = "";
+			
+			// Queue gridout event handlers if there are any
+			var
+				timeout = 10,
+				gridout = g.events.gridout;
+			if (
+				downTile.x !== null &&
+				downTile.y !== null &&
+				gridout &&
+				!event.inside(elem)
+			) {
+				for (var i=0, l=gridout.length; i<l; i++) {
+					(function(callback, x, y){
+						setTimeout(function(){
+							callback.call(null, x, y);
+						}, timeout++)
+					})(gridout[i], downTile.x, downTile.y);
+				}
 			}
+			
+			// Clear previously set downTile and lastTile coordinates
 			downTile.x = null;
 			downTile.y = null;
+			lastTile.x = null;
+			lastTile.y = null;
 		});
 		
 		// Perform initialization if grid supports it
