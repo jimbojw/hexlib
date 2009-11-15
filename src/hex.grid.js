@@ -162,41 +162,26 @@ hex.extend(hex, {
 			// NOTE: For example, on a mouseout or mouseover where the mousemove already covered it
 			if (inside && lastTile.x === trans.x && lastTile.y === trans.y) return;
 			
-			// Shorthand method for queuing up a callback
-			function queue(callback, args) {
-				return setTimeout(function(){
-					callback.apply(null, args);
-				}, timeout++);
-			}
-			
 			// Queue up tileout callbacks if there are any
 			if (tileout && lastTile.x !== null && lastTile.y !== null) {
-				for (var i=0, l=tileout.length; i<l; i++) {
-					queue(tileout[i], [lastTile.x, lastTile.y]);
-				}
+				timeout = g.trigger("tileout", timeout, lastTile.x, lastTile.y);
 			}
 			
 			// Queue up gridout callbacks if applicable
 			if (!inside && gridout && lastTile.x !== null && lastTile.y !== null) {
-				for (var i=0, l=gridout.length; i<l; i++) {
-					queue(gridout[i], [lastTile.x, lastTile.y]);
-				}
+				timeout = g.trigger("gridout", timeout, lastTile.x, lastTile.y);
 			}
 			
 			if (inside) {
 				
 				// Queue up gridover callbacks if applicable
 				if (gridover && lastTile.x === null && lastTile.y === null) {
-					for (var i=0, l=gridover.length; i<l; i++) {
-						queue(gridover[i], [trans.x, trans.y]);
-					}
+					timeout = g.trigger("gridover", timeout, trans.x, trans.y);
 				}
 				
 				// Queue up tileover callbacks if there are any
 				if (tileover) {
-					for (var i=0, l=tileover.length; i<l; i++) {
-						queue(tileover[i], [trans.x, trans.y]);
-					}
+					timeout = g.trigger("tileover", timeout, trans.x, trans.y);
 				}
 				
 				lastTile.x = trans.x;
@@ -273,20 +258,11 @@ hex.extend(hex, {
 				tileup = g.events.tileup,
 				tileclick = g.events.tileclick;
 			
-			// Shorthand method for queuing up a callback
-			function queue(callback, args) {
-				return setTimeout(function(){
-					callback.apply(null, args);
-				}, timeout++);
-			}
-				
 			if (event.type === "mousedown") {
 				
 				// Queue up tiledown callbacks
 				if (tiledown) {
-					for (var i=0, l=tiledown.length; i<l; i++) {
-						queue(tiledown[i], [trans.x, trans.y]);
-					}
+					timeout = g.trigger("tiledown", timeout, trans.x, trans.y);
 				}
 				
 				// Remember mousedown target (to test for "click" later)
@@ -297,16 +273,12 @@ hex.extend(hex, {
 				
 				// Queue up tileup callbacks
 				if (tileup) {
-					for (var i=0, l=tileup.length; i<l; i++) {
-						queue(tileup[i], [trans.x, trans.y]);
-					}
+					timeout = g.trigger("tileup", timeout, trans.x, trans.y);
 				}
 				
 				// Queue up tileclick callbacks
 				if (tileclick && downTile.x === trans.x && downTile.y === trans.y) {
-					for (var i=0, l=tileclick.length; i<l; i++) {
-						queue(tileclick[i], [trans.x, trans.y]);
-					}
+					timeout = g.trigger("tileclick", timeout, trans.x, trans.y);
 				}
 				
 				// Clear mousedown target
@@ -340,23 +312,9 @@ hex.extend(hex, {
 			pan.y = null;
 			elem.style.cursor = "";
 			
-			// Queue gridout event handlers if there are any
-			var
-				timeout = 10,
-				gridout = g.events.gridout;
-			if (
-				downTile.x !== null &&
-				downTile.y !== null &&
-				gridout &&
-				!event.inside(elem)
-			) {
-				for (var i=0, l=gridout.length; i<l; i++) {
-					(function(callback, x, y){
-						setTimeout(function(){
-							callback.call(null, x, y);
-						}, timeout++)
-					})(gridout[i], downTile.x, downTile.y);
-				}
+			// Queue gridout event handlers if applicable
+			if (downTile.x !== null && downTile.y !== null && !event.inside(elem)) {
+				g.trigger("gridout", 10, downTile.x, downTile.y);
 			}
 			
 			// Clear previously set downTile and lastTile coordinates
