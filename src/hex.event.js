@@ -8,6 +8,7 @@ var
 	undefined,
 	window = this,
 	document = window.document,
+	slice = Array.prototype.slice,
 	hex = window.hex;
 
 hex.extend(hex, {
@@ -28,6 +29,30 @@ hex.extend(hex, {
 			if (this.events[type] === undefined) this.events[type] = [];
 			this.events[type].push(handler);
 			return this;
+		},
+		
+		/**
+		 * Triggers an event to fire using setTimeout() so exceptions in handlers don't break other handlers.
+		 * @param type The type of event to fire.
+		 * @param timeout Time in milliseconds to wait before firing the first event.
+		 * @param args Any additional arguments to pass to handlers.
+		 * @return The timeout of the last event queued, plus one, or false if no handlers of that type are set.
+		 */
+		trigger: function trigger( type, timeout /*, args ... */ ) {
+			if (timeout === undefined) throw "no timeout was supplied";
+			if (!this.events || !this.events[type]) return false;
+			var
+				timeout = +timeout,
+				handlers = this.events[type],
+				args = slice.call(arguments, 2);
+			for (var i=0, l=handlers.length; i<l; i++) {
+				(function(callback, args){
+					setTimeout(function(){
+						callback.apply(null, args);
+					}, timeout++);
+				})(handlers[i], args);
+			}
+			return timeout;
 		}
 		
 	}
