@@ -1,5 +1,6 @@
 /**
  * hex.event.js
+ * Library methods for DOM and non-DOM events.
  */
 (function(){
 
@@ -9,8 +10,32 @@ var
 	document = window.document,
 	hex = window.hex;
 
+hex.extend(hex, {
+	
+	/**
+	 * The evented prototype, for non-DOM objects which support handling non-DOM events.
+	 */
+	evented: {
+		
+		/**
+		 * Adds an event handler.
+		 * @param type The type of event to which to respond.
+		 * @param handler The function to execute.
+		 * @return this.
+		 */
+		addEvent: function addEvent( type, handler ) {
+			if (!this.events) this.events = {};
+			if (this.events[type] === undefined) this.events[type] = [];
+			this.events[type].push(handler);
+			return this;
+		}
+		
+	}
+	
+});
+
 /**
- * The rich Event "prototype".
+ * The rich Event "prototype" for DOM events.
  */
 var Event = {
 	

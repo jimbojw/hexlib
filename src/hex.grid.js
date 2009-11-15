@@ -12,20 +12,7 @@ var
 /**
  * The Grid prototype.
  */
-var Grid = {
-	
-	/**
-	 * Adds a grid event and handler.
-	 * @param type The type of event to which to respond.
-	 * @param handler The function to execute.
-	 * @return this.
-	 */
-	addEvent: function addEvent( type, handler ) {
-		if (!this.events) this.events = {};
-		if (this.events[type] === undefined) this.events[type] = [];
-		this.events[type].push(handler);
-		return this;
-	},
+var Grid = hex.create(hex.evented, {
 	
 	/**
 	 * Default option values.
@@ -50,7 +37,7 @@ var Grid = {
 		this.elem.style.backgroundPosition = x + "px " + y + "px";
 	}
 	
-};
+});
 
 hex.extend(hex, {
 	
