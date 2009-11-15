@@ -7,9 +7,12 @@
 	width: 620px;
 	float: right;
 }
+#test-content h3 {
+	clear: both;
+}
 
 /**
- * grid test styles
+ * grid and region test styles
  */
 .grid-test {
 	width: 300px;
@@ -17,10 +20,12 @@
 	background: #ccc;
 	float: right;
 }
-#hexagonal-grid {
+#hexagonal-grid,
+#regioned-hexagonal-grid {
 	background-image: url(../graphics/background/hex-grid-48x42.png);
 }
-#rectangular-grid {
+#rectangular-grid,
+#regioned-rectangular-grid {
 	background-image: url(../graphics/background/square-grid-48x48.png);
 }
 #skew-grid {
