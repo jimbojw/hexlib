@@ -56,7 +56,7 @@ function setupGrid( grid ) {
 	
 	// Extra element to mark the origin
 	var marker = document.createElement("div");
-	marker.innerHTML = "<!-- -->";
+	marker.style.lineHeight = "0px";
 	marker.style.position = "absolute";
 	marker.style.border = "5px ridge red";
 	marker.style.height = "0px";

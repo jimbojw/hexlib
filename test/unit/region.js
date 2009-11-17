@@ -29,12 +29,18 @@ function setupRegionedGrid( region ) {
 	
 	var grid = region.grid;
 	
+	// Attach region backdrop
+	var backdrop = document.createElement("div");
+	backdrop.className = "backdrop";
+	grid.root.appendChild(backdrop);
+	
 	// Element to show the previously hovered tile
 	var prev = document.createElement("div");
 	prev.style.textAlign = "center";
 	prev.style.lineHeight = grid.tileHeight + "px";
 	prev.style.position = "absolute";
 	prev.style.border = "4px outset yellow";
+	prev.style.background = "yellow";
 	prev.style.width = (grid.tileWidth - 7) + "px";
 	prev.style.height = (grid.tileHeight - 7) + "px";
 	prev.style.display = "none";
@@ -46,21 +52,11 @@ function setupRegionedGrid( region ) {
 	curr.style.lineHeight = grid.tileHeight + "px";
 	curr.style.position = "absolute";
 	curr.style.border = "4px outset green";
+	curr.style.background = "lightgreen";
 	curr.style.width = (grid.tileWidth - 7) + "px";
 	curr.style.height = (grid.tileHeight - 7) + "px";
 	curr.style.display = "none";
 	grid.root.appendChild(curr);
-	
-	// Extra element to mark the origin
-	var marker = document.createElement("div");
-	marker.innerHTML = "<!-- -->";
-	marker.style.position = "absolute";
-	marker.style.border = "5px ridge red";
-	marker.style.height = "0px";
-	marker.style.width = "0px";
-	marker.style.left = "-5px";
-	marker.style.top = "-5px";
-	grid.root.appendChild(marker);
 	
 	// Setting mouse movement related tile events
 	grid.addEvent("tileover", function(x, y) {
@@ -76,16 +72,6 @@ function setupRegionedGrid( region ) {
 		prev.innerHTML = [x, y] + '';
 	});
 	
-	// Setting mouse movement related grid events
-	grid.addEvent("gridover", function(x, y) {
-		curr.style.display = "";
-		prev.style.display = "";
-	});
-	grid.addEvent("gridout", function(x, y) {
-		curr.style.display = "none";
-		prev.style.display = "none";
-	});
-	
 	// Center the root element.
 	var size = hex.size(grid.elem);
 	grid.reorient(size.x * 0.5, size.y * 0.5);
@@ -93,15 +79,23 @@ function setupRegionedGrid( region ) {
 	// Setting region events
 	region.addEvent("regionover", function(x, y) {
 		hex.log([x, y], "regionover");
+		curr.style.display = "";
+		prev.style.display = "";
 	});
 	region.addEvent("regionout", function(x, y) {
 		hex.log([x, y], "regionout");
+		curr.style.display = "none";
+		prev.style.display = "none";
 	});
 	region.addEvent("regiondown", function(x, y) {
 		hex.log([x, y], "regiondown");
+		curr.style.borderStyle = "inset";
+		curr.style.background = "green";
 	});
 	region.addEvent("regionup", function(x, y) {
 		hex.log([x, y], "regionup");
+		curr.style.borderStyle = "outset";
+		curr.style.background = "lightgreen";
 	});
 	region.addEvent("regionclick", function(x, y) {
 		hex.log([x, y], "regionclick");
@@ -124,6 +118,13 @@ test("hex.region(hexagonal grid)", function() {
 	var region = hex.region(grid, {
 		inside: function inside(x, y) {
 			// In the neighborhood of 0,0
+			if (x < -2 || x > 2) return false;
+			if (x === -2 && (y < 0 || y > 2)) return false;
+			if (x === -1 && (y < -1 || y > 2)) return false;
+			if (x === 0 && (y < -2 || y > 2)) return false;
+			if (x === 1 && (y < -2 || y > 1)) return false;
+			if (x === 2 && (y < -2 || y > 0)) return false;
+			return true;
 			return (
 				( x === 0 && y === 0 ) ||
 				( x > -2 && x < 2 && y > -2 && y < 2 )
@@ -134,6 +135,8 @@ test("hex.region(hexagonal grid)", function() {
 	
 	// Additional setup steps
 	setupRegionedGrid(region);
+	
+	grid.reorient(grid.origin.x - grid.tileWidth * 0.5, grid.origin.y - grid.tileHeight * 0.5);
 	
 });
 

@@ -35,3 +35,20 @@
 	background-image: url(../graphics/background/vertical-triangle-grid-56x96.png);
 }
 
+#regioned-hexagonal-grid .backdrop{
+	position: absolute;
+	left: -72px;
+	top: -84px;
+	height: 210px;
+	width: 192px;
+	background-image: url(../graphics/region/simple-hexagon-3x3x3-192x210.png);
+}
+#regioned-rectangular-grid .backdrop{
+	position: absolute;
+	left: -96px;
+	top: -96px;
+	height: 192px;
+	width: 192px;
+	background-image: url(../graphics/region/simple-square-2x2-192x192.png);
+}
+
