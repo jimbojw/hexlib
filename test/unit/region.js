@@ -34,18 +34,6 @@ function setupRegionedGrid( region ) {
 	backdrop.className = "backdrop";
 	grid.root.appendChild(backdrop);
 	
-	// Element to show the previously hovered tile
-	var prev = document.createElement("div");
-	prev.style.textAlign = "center";
-	prev.style.lineHeight = grid.tileHeight + "px";
-	prev.style.position = "absolute";
-	prev.style.border = "4px outset yellow";
-	prev.style.background = "yellow";
-	prev.style.width = (grid.tileWidth - 7) + "px";
-	prev.style.height = (grid.tileHeight - 7) + "px";
-	prev.style.display = "none";
-	grid.root.appendChild(prev);
-	
 	// Element to show the currently hovered tile
 	var curr = document.createElement("div");
 	curr.style.textAlign = "center";
@@ -65,12 +53,6 @@ function setupRegionedGrid( region ) {
 		curr.style.top = inv.y + "px";
 		curr.innerHTML = [x, y] + '';
 	});
-	grid.addEvent("tileout", function(x, y) {
-		var inv = grid.screenpos(x, y);
-		prev.style.left = inv.x + "px";
-		prev.style.top = inv.y + "px";
-		prev.innerHTML = [x, y] + '';
-	});
 	
 	// Center the root element.
 	var size = hex.size(grid.elem);
@@ -80,12 +62,10 @@ function setupRegionedGrid( region ) {
 	region.addEvent("regionover", function(x, y) {
 		hex.log([x, y], "regionover");
 		curr.style.display = "";
-		prev.style.display = "";
 	});
 	region.addEvent("regionout", function(x, y) {
 		hex.log([x, y], "regionout");
 		curr.style.display = "none";
-		prev.style.display = "none";
 	});
 	region.addEvent("regiondown", function(x, y) {
 		hex.log([x, y], "regiondown");
