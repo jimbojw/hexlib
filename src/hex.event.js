@@ -32,27 +32,52 @@ hex.extend(hex, {
 		},
 		
 		/**
-		 * Triggers an event to fire using setTimeout() so exceptions in handlers don't break other handlers.
+		 * Triggers an event to fire.
+		 * Note: Exceptions thrown in handlers will not interrupt other handlers.
 		 * @param type The type of event to fire.
-		 * @param timeout Time in milliseconds to wait before firing the first event.
 		 * @param args Any additional arguments to pass to handlers.
-		 * @return The timeout of the last event queued, plus one, or false if no handlers of that type are set.
 		 */
-		trigger: function trigger( type, timeout /*, args ... */ ) {
-			if (timeout === undefined) throw "no timeout was supplied";
+		trigger: function trigger( type /*, args ... */ ) {
 			if (!this.events || !this.events[type]) return false;
 			var
-				timeout = +timeout,
+				timeout = 10,
 				handlers = this.events[type],
-				args = slice.call(arguments, 2);
-			for (var i=0, l=handlers.length; i<l; i++) {
-				(function(self, callback, args){
+				args = slice.call(arguments, 1),
+				i=0,
+				l=handlers.length;
+			while (i<l) {
+				try {
+					while (i<l) {
+						handlers[i++].apply(this, args);
+					}
+				} catch (err) {
 					setTimeout(function(){
-						callback.apply(self, args);
+						throw err;
 					}, timeout++);
-				})(this, handlers[i], args);
+				}
 			}
-			return timeout;
+		},
+		
+		/**
+		 * Queue up an event to fire later (using the fire method).
+		 * @param type The type of event to fire.
+		 * @param args Any additional arguments to pass to handlers.
+		 */
+		queue: function queue( type /*, args ... */ ) {
+			var q = this.eventqueue;
+			if (!q) q = this.eventqueue = [];
+			q[q.length] = slice.call(arguments, 0);
+		},
+		
+		/**
+		 * Sequentially trigger any previously queued events.
+		 */
+		fire: function fire() {
+			var q = this.eventqueue;
+			if (!q || !q.length) return;
+			while (q.length) {
+				this.trigger.apply(this, q.shift());
+			}
 		}
 		
 	}

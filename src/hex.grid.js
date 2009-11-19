@@ -144,7 +144,6 @@ hex.extend(hex, {
 			) return;
 			
 			var
-				timeout = 10,
 				tileover = g.events.tileover,
 				tileout = g.events.tileout,
 				gridover = g.events.gridover,
@@ -164,24 +163,24 @@ hex.extend(hex, {
 			
 			// Queue up tileout callbacks if there are any
 			if (tileout && lastTile.x !== null && lastTile.y !== null) {
-				timeout = g.trigger("tileout", timeout, lastTile.x, lastTile.y);
+				g.queue("tileout", lastTile.x, lastTile.y);
 			}
 			
 			// Queue up gridout callbacks if applicable
 			if (!inside && gridout && lastTile.x !== null && lastTile.y !== null) {
-				timeout = g.trigger("gridout", timeout, lastTile.x, lastTile.y);
+				g.queue("gridout", lastTile.x, lastTile.y);
 			}
 			
 			if (inside) {
 				
 				// Queue up gridover callbacks if applicable
 				if (gridover && lastTile.x === null && lastTile.y === null) {
-					timeout = g.trigger("gridover", timeout, trans.x, trans.y);
+					g.queue("gridover", trans.x, trans.y);
 				}
 				
 				// Queue up tileover callbacks if there are any
 				if (tileover) {
-					timeout = g.trigger("tileover", timeout, trans.x, trans.y);
+					g.queue("tileover", trans.x, trans.y);
 				}
 				
 				lastTile.x = trans.x;
@@ -193,6 +192,9 @@ hex.extend(hex, {
 				lastTile.y = null;
 				
 			}
+			
+			// Fire off queued events
+			g.fire();
 		
 		}
 		
@@ -253,7 +255,6 @@ hex.extend(hex, {
 				// Grid-centric coordinates of the latest actioned tile
 				trans = g.translate(pos.x, pos.y),
 				
-				timeout = 10,
 				tiledown = g.events.tiledown,
 				tileup = g.events.tileup,
 				tileclick = g.events.tileclick;
@@ -262,7 +263,7 @@ hex.extend(hex, {
 				
 				// Queue up tiledown callbacks
 				if (tiledown) {
-					timeout = g.trigger("tiledown", timeout, trans.x, trans.y);
+					g.queue("tiledown", trans.x, trans.y);
 				}
 				
 				// Remember mousedown target (to test for "click" later)
@@ -273,12 +274,12 @@ hex.extend(hex, {
 				
 				// Queue up tileup callbacks
 				if (tileup) {
-					timeout = g.trigger("tileup", timeout, trans.x, trans.y);
+					g.queue("tileup", trans.x, trans.y);
 				}
 				
 				// Queue up tileclick callbacks
 				if (tileclick && downTile.x === trans.x && downTile.y === trans.y) {
-					timeout = g.trigger("tileclick", timeout, trans.x, trans.y);
+					g.queue("tileclick", trans.x, trans.y);
 				}
 				
 				// Clear mousedown target
@@ -286,6 +287,9 @@ hex.extend(hex, {
 				downTile.y = null;
 				
 			}
+			
+			// Fire off queued events
+			g.fire();
 			
 		}
 		
@@ -314,7 +318,7 @@ hex.extend(hex, {
 			
 			// Queue gridout event handlers if applicable
 			if (downTile.x !== null && downTile.y !== null && !event.inside(elem)) {
-				g.trigger("gridout", 10, downTile.x, downTile.y);
+				g.queue("gridout", downTile.x, downTile.y);
 			}
 			
 			// Clear previously set downTile and lastTile coordinates
@@ -322,6 +326,10 @@ hex.extend(hex, {
 			downTile.y = null;
 			lastTile.x = null;
 			lastTile.y = null;
+			
+			// Fire off queued events
+			g.fire();
+			
 		});
 		
 		// Perform initialization if grid supports it

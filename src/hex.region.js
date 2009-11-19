@@ -48,13 +48,13 @@ hex.extend(hex, {
 		grid.addEvent("tileover", function(x, y) {
 			var inside = r.inside(x, y);
 			if (inside !== wasInside) {
-				r.trigger(inside ? "regionover" : "regionout", 10, x, y);
+				r.trigger(inside ? "regionover" : "regionout", x, y);
 			}
 			wasInside = inside;
 		});
 		grid.addEvent("gridout", function(x, y) {
 			if (wasInside) {
-				r.trigger("regionout", 10, x, y);
+				r.trigger("regionout", x, y);
 			}
 			wasInside = false;
 		});
@@ -66,16 +66,15 @@ hex.extend(hex, {
 		grid.addEvent("tiledown", function(x, y) {
 			var inside = r.inside(x, y);
 			if (inside) {
-				r.trigger("regiondown", 10, x, y);
+				r.trigger("regiondown", x, y);
 			}
 			downInside = inside;
 		});
 		grid.addEvent("tileup", function(x, y) {
-			var timeout = 10;
 			if (r.inside(x, y)) {
-				timeout = r.trigger("regionup", timeout, x, y);
+				r.trigger("regionup", x, y);
 				if (downInside) {
-					r.trigger("regionclick", timeout, x, y);
+					r.trigger("regionclick", x, y);
 				}
 			}
 		});
