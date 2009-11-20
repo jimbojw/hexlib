@@ -84,9 +84,11 @@ function setupGrid( grid ) {
 	// Setting mouse button related tile events
 	grid.addEvent("tiledown", function(x, y) {
 		hex.log([x, y], "tiledown");
+		curr.style.borderStyle = "inset";
 	});
 	grid.addEvent("tileup", function(x, y) {
 		hex.log([x, y], "tileup");
+		curr.style.borderStyle = "outset";
 	});
 	grid.addEvent("tileclick", function(x, y) {
 		hex.log([x, y], "tileclick");
