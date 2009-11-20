@@ -12,6 +12,13 @@
 }
 
 /**
+ * sprite test styles
+ */
+.sprite-test .sprite {
+	float: right;
+}
+
+/**
  * grid and region test styles
  */
 .grid-test {
