@@ -11,6 +11,19 @@ var
 	slice = Array.prototype.slice,
 	hex = window.hex;
 
+/**
+ * The rich event prototype for non-DOM (hex) events.
+ */
+var HexEvent = {
+	
+	/**
+	 * Prevent the default action of the event.
+	 */
+	preventDefault: function preventDefault() {
+	}
+	
+};
+
 hex.extend(hex, {
 	
 	/**
@@ -45,9 +58,9 @@ hex.extend(hex, {
 				args = slice.call(arguments, 0),
 				i=0,
 				l=handlers.length;
-			args[0] = {
+			args[0] = hex.create(HexEvent, {
 				type: type
-			};
+			});
 			while (i<l) {
 				try {
 					while (i<l) {
