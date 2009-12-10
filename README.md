@@ -9,5 +9,5 @@ JavaScript library for creating web games, particularly tile games played on a h
 * [http://github.com/jimbojw/hexlib/](http://github.com/jimbojw/hexlib/)
 
 ### License
-Trephine is released under [The MIT License](http://www.opensource.org/licenses/mit-license.php).
+hexlib is released under [The MIT License](http://www.opensource.org/licenses/mit-license.php).
 
