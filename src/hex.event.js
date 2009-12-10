@@ -88,9 +88,9 @@ hex.extend(hex, {
 });
 
 /**
- * The rich Event "prototype" for DOM events.
+ * The rich event "prototype" for DOM events.
  */
-var Event = {
+var DOMEvent = {
 	
 	/**
 	 * Grab the actual target element of the masked event.
@@ -189,7 +189,7 @@ if (document.addEventListener) {
 		 */
 		addEvent: function addEvent( elem, type, handler ) {
 			function callback(e) {
-				return handler.call(elem, hex.create(e, Event, {event : e}));
+				return handler.call(elem, hex.create(e, DOMEvent, {event : e}));
 			}
 			elem.addEventListener(type, callback, false);
 			return hex.create(Handler, {
@@ -241,7 +241,7 @@ if (document.addEventListener) {
 		addEvent: function addEvent( elem, type, handler ) {
 			function callback() {
 				var e = window.event;
-				return handler.call(elem, hex.extend({}, e, Event, { event: e }));
+				return handler.call(elem, hex.extend({}, e, DOMEvent, { event: e }));
 			}
 			function remove(){
 				elem.detachEvent("on" + type, callback);
