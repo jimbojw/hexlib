@@ -54,6 +54,13 @@ function setupRegionedGrid( region ) {
 		curr.innerHTML = [x, y] + '';
 	});
 	
+	// Disable panning if the tiledown event happened in the region
+	grid.addEvent("tiledown", function(e, x, y) {
+		if (region.inside(x, y)) {
+			e.preventDefault(); // the "default" tiledown action is to begin panning
+		}
+	});
+	
 	// Center the root element.
 	var size = hex.size(grid.elem);
 	grid.reorient(size.x * 0.5, size.y * 0.5);

@@ -16,12 +16,6 @@ var
  */
 var HexEvent = {
 	
-	/**
-	 * Prevent the default action of the event.
-	 */
-	preventDefault: function preventDefault() {
-	}
-	
 };
 
 hex.extend(hex, {
@@ -49,6 +43,7 @@ hex.extend(hex, {
 		 * Note: Exceptions thrown in handlers will not interrupt other handlers.
 		 * @param type The type of event to fire.
 		 * @param args Any additional arguments to pass to handlers.
+		 * @return An object containing information about the callback execution, or false if there was nothing to do.
 		 */
 		trigger: function trigger( type /*, args ... */ ) {
 			if (!this.events || !this.events[type]) return false;
@@ -56,22 +51,34 @@ hex.extend(hex, {
 				timeout = 10,
 				handlers = this.events[type],
 				args = slice.call(arguments, 0),
-				i=0,
-				l=handlers.length;
-			args[0] = hex.create(HexEvent, {
-				type: type
-			});
+				i = 0,
+				l = handlers.length,
+				prevented = false,
+				e = args[0] = hex.create(HexEvent, {
+					type: type,
+					preventDefault: function preventDefault() {
+						prevented = true;
+					}
+				}),
+				errors = [];
 			while (i<l) {
 				try {
 					while (i<l) {
 						handlers[i++].apply(this, args);
 					}
 				} catch (err) {
+					errors[errors.length] = err;
 					setTimeout(function(){
 						throw err;
 					}, timeout++);
 				}
 			}
+			return {
+				event: e,
+				errors: errors,
+				prevented: prevented,
+				args: args
+			};
 		},
 		
 		/**

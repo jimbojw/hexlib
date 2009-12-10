@@ -263,7 +263,11 @@ hex.extend(hex, {
 				
 				// Queue up tiledown callbacks
 				if (tiledown) {
-					g.queue("tiledown", trans.x, trans.y);
+					var res = g.trigger("tiledown", trans.x, trans.y);
+					if (res && res.prevented) {
+						pan.panning = false;
+						pan.x = pan.y = null;
+					}
 				}
 				
 				// Remember mousedown target (to test for "click" later)
@@ -286,10 +290,10 @@ hex.extend(hex, {
 				downTile.x = null;
 				downTile.y = null;
 				
-			}
+				// Fire off queued events
+				g.fire();
 			
-			// Fire off queued events
-			g.fire();
+			}
 			
 		}
 		
