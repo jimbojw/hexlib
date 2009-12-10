@@ -103,6 +103,7 @@ hex.extend(hex, {
 		
 		// Keep track of the panning state
 		var pan = {
+			enabled: true,
 			panning: false,
 			x: null,
 			y: null
@@ -124,7 +125,7 @@ hex.extend(hex, {
 			
 			// Handle panning
 			if (pan.panning) {
-				if (inside) {
+				if (pan.enabled && inside) {
 					var
 						px = pos.x - pan.x,
 						py = pos.y - pan.y
@@ -232,10 +233,13 @@ hex.extend(hex, {
 			
 			// Cease panning
 			if (pan.panning && event.type === "mouseup") {
-				g.reorient(
-					mousepos.x - g.origin.x - pan.x,
-					mousepos.y - g.origin.y - pan.y
-				);
+				if (pan.enabled) {
+					g.reorient(
+						mousepos.x - g.origin.x - pan.x,
+						mousepos.y - g.origin.y - pan.y
+					);
+				}
+				pan.enabled = true;
 				pan.panning = false;
 				pan.x = null;
 				pan.y = null;
@@ -265,8 +269,7 @@ hex.extend(hex, {
 				if (tiledown) {
 					var res = g.trigger("tiledown", trans.x, trans.y);
 					if (res && res.prevented) {
-						pan.panning = false;
-						pan.x = pan.y = null;
+						pan.enabled = false;
 					}
 				}
 				

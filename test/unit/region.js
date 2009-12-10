@@ -65,29 +65,38 @@ function setupRegionedGrid( region ) {
 	var size = hex.size(grid.elem);
 	grid.reorient(size.x * 0.5, size.y * 0.5);
 	
-	// Setting region events
-	region.addEvent("regionover", function(e, x, y) {
+	// Announce an event to the log
+	function announce(e, x, y) {
 		hex.log([x, y], e.type);
+	}
+	region.addEvent("regionover", announce);
+	region.addEvent("regionout", announce);
+	region.addEvent("regiondown", announce);
+	region.addEvent("regionup", announce);
+	region.addEvent("regionclick", announce);
+	
+	// Setting region UI events
+	region.addEvent("regionover", function(e, x, y) {
 		curr.style.display = "";
 	});
 	region.addEvent("regionout", function(e, x, y) {
-		hex.log([x, y], e.type);
 		curr.style.display = "none";
 	});
-	region.addEvent("regiondown", function(e, x, y) {
-		hex.log([x, y], e.type);
+	region.addEvent("regiondown", function (e, x, y) {
 		curr.style.borderStyle = "inset";
 		curr.style.background = "green";
 	});
-	region.addEvent("regionup", function(e, x, y) {
-		hex.log([x, y], e.type);
+	
+	// Special case for when the hold is released
+	function release(e, x, y) {
 		curr.style.borderStyle = "outset";
 		curr.style.background = "lightgreen";
+	}
+	grid.addEvent("gridout", release);
+	grid.addEvent("tileup", function(e, x, y) {
+		release(e, x, y);
+		grid.trigger("tileover", x, y);
 	});
-	region.addEvent("regionclick", function(e, x, y) {
-		hex.log([x, y], e.type);
-	});
-	
 }
 
 test("hex.region(hexagonal grid)", function() {
