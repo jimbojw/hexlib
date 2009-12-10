@@ -66,15 +66,15 @@ function setupGrid( grid ) {
 	grid.root.appendChild(marker);
 	
 	// Setting mouse movement related tile events
-	grid.addEvent("tileover", function(x, y) {
-		hex.log([x, y], "tileover");
+	grid.addEvent("tileover", function(e, x, y) {
+		hex.log([x, y], e.type);
 		var inv = grid.screenpos(x, y);
 		curr.style.left = inv.x + "px";
 		curr.style.top = inv.y + "px";
 		curr.innerHTML = [x, y] + '';
 	});
-	grid.addEvent("tileout", function(x, y) {
-		hex.log([x, y], "tileout");
+	grid.addEvent("tileout", function(e, x, y) {
+		hex.log([x, y], e.type);
 		var inv = grid.screenpos(x, y);
 		prev.style.left = inv.x + "px";
 		prev.style.top = inv.y + "px";
@@ -82,26 +82,26 @@ function setupGrid( grid ) {
 	});
 	
 	// Setting mouse button related tile events
-	grid.addEvent("tiledown", function(x, y) {
-		hex.log([x, y], "tiledown");
+	grid.addEvent("tiledown", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.borderStyle = "inset";
 	});
-	grid.addEvent("tileup", function(x, y) {
-		hex.log([x, y], "tileup");
+	grid.addEvent("tileup", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.borderStyle = "outset";
 	});
-	grid.addEvent("tileclick", function(x, y) {
-		hex.log([x, y], "tileclick");
+	grid.addEvent("tileclick", function(e, x, y) {
+		hex.log([x, y], e.type);
 	});
 	
 	// Setting mouse movement related grid events
-	grid.addEvent("gridover", function(x, y) {
-		hex.log([x, y], "gridover");
+	grid.addEvent("gridover", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.display = "";
 		prev.style.display = "";
 	});
-	grid.addEvent("gridout", function(x, y) {
-		hex.log([x, y], "gridout");
+	grid.addEvent("gridout", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.display = "none";
 		prev.style.display = "none";
 	});

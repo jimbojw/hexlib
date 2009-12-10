@@ -42,9 +42,12 @@ hex.extend(hex, {
 			var
 				timeout = 10,
 				handlers = this.events[type],
-				args = slice.call(arguments, 1),
+				args = slice.call(arguments, 0),
 				i=0,
 				l=handlers.length;
+			args[0] = {
+				type: type
+			};
 			while (i<l) {
 				try {
 					while (i<l) {

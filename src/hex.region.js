@@ -45,14 +45,14 @@ hex.extend(hex, {
 		var wasInside = false;
 		
 		// Add grid movenment events
-		grid.addEvent("tileover", function(x, y) {
+		grid.addEvent("tileover", function(e, x, y) {
 			var inside = r.inside(x, y);
 			if (inside !== wasInside) {
 				r.trigger(inside ? "regionover" : "regionout", x, y);
 			}
 			wasInside = inside;
 		});
-		grid.addEvent("gridout", function(x, y) {
+		grid.addEvent("gridout", function(e, x, y) {
 			if (wasInside) {
 				r.trigger("regionout", x, y);
 			}
@@ -63,14 +63,14 @@ hex.extend(hex, {
 		var downInside = false;
 		
 		// Add grid click events
-		grid.addEvent("tiledown", function(x, y) {
+		grid.addEvent("tiledown", function(e, x, y) {
 			var inside = r.inside(x, y);
 			if (inside) {
 				r.trigger("regiondown", x, y);
 			}
 			downInside = inside;
 		});
-		grid.addEvent("tileup", function(x, y) {
+		grid.addEvent("tileup", function(e, x, y) {
 			if (r.inside(x, y)) {
 				r.trigger("regionup", x, y);
 				if (downInside) {

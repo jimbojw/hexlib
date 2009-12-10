@@ -47,7 +47,7 @@ function setupRegionedGrid( region ) {
 	grid.root.appendChild(curr);
 	
 	// Setting mouse movement related tile events
-	grid.addEvent("tileover", function(x, y) {
+	grid.addEvent("tileover", function(e, x, y) {
 		var inv = grid.screenpos(x, y);
 		curr.style.left = inv.x + "px";
 		curr.style.top = inv.y + "px";
@@ -59,26 +59,26 @@ function setupRegionedGrid( region ) {
 	grid.reorient(size.x * 0.5, size.y * 0.5);
 	
 	// Setting region events
-	region.addEvent("regionover", function(x, y) {
-		hex.log([x, y], "regionover");
+	region.addEvent("regionover", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.display = "";
 	});
-	region.addEvent("regionout", function(x, y) {
-		hex.log([x, y], "regionout");
+	region.addEvent("regionout", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.display = "none";
 	});
-	region.addEvent("regiondown", function(x, y) {
-		hex.log([x, y], "regiondown");
+	region.addEvent("regiondown", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.borderStyle = "inset";
 		curr.style.background = "green";
 	});
-	region.addEvent("regionup", function(x, y) {
-		hex.log([x, y], "regionup");
+	region.addEvent("regionup", function(e, x, y) {
+		hex.log([x, y], e.type);
 		curr.style.borderStyle = "outset";
 		curr.style.background = "lightgreen";
 	});
-	region.addEvent("regionclick", function(x, y) {
-		hex.log([x, y], "regionclick");
+	region.addEvent("regionclick", function(e, x, y) {
+		hex.log([x, y], e.type);
 	});
 	
 }
