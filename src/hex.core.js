@@ -77,7 +77,7 @@ extend(hex, {
 		if (this.debug && window.console) {
 			console.log.apply(console, arguments);
 		}
-	},
+	}
 	
 });
 
