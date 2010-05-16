@@ -12,12 +12,17 @@ hex.extend(hex, {
 	 * @return An object with x and y properties to represent the position.
 	 */
 	position: function position( elem ) {
-		var left = elem.offsetLeft, top = elem.offsetTop;
+		var
+			left = elem.offsetLeft,
+			top = elem.offsetTop;
 		while (elem = elem.offsetParent) {
 			left += elem.offsetLeft;
 			top += elem.offsetTop;
 		}
-		return { x: left, y: top };
+		return {
+			x: left,
+			y: top
+		};
 	},
 	
 	/**
@@ -26,7 +31,10 @@ hex.extend(hex, {
 	 * @return An object with x and y properties to represent the dimensions.
 	 */
 	size: function size( elem ) {
-		return { x: elem.offsetWidth, y: elem.offsetHeight };
+		return {
+			x: elem.offsetWidth,
+			y: elem.offsetHeight
+		};
 	},
 	
 	/**

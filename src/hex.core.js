@@ -4,11 +4,14 @@
 (function(window, document, undefined){
 
 var
-	version = '0.1',
+	
+	hex = window.hex = {
+		version: '0.1'
+	},
+	
 	join = Array.prototype.join,
 	slice = Array.prototype.slice,
-	has = Object.prototype.hasOwnProperty,
-	hex = window.hex = {};
+	has = Object.prototype.hasOwnProperty;
 
 /**
  * Anonymous function used in constructing objects from prototypes.
@@ -22,12 +25,14 @@ function anonymous(){};
  * @return The object which was extended.
  */
 var extend = hex.extend = function extend( obj /*, args ... */ ) {
-	var args = slice.call(arguments, 1);
-	for (var i=0, l=args.length; i<l; i++) {
-		var other = args[i];
-		if (!other) continue;
-		for (var k in other) {
-			if (has.call(other, k)) obj[k] = other[k];
+	for (var i=0, l=arguments.length; i<l; i++) {
+		var other = arguments[i];
+		if (other) {
+			for (var k in other) {
+				if (has.call(other, k)) {
+					obj[k] = other[k];
+				}
+			}
 		}
 	}
 	return obj;
@@ -42,11 +47,15 @@ extend(hex, {
 	 * @return A new object with the prototypal parent set, extended by the provided args.
 	 */
 	create: function create( parent /*, args ... */ ) {
-		if (!parent) throw "no parent supplied";
+		if (!parent) {
+			throw "no parent supplied";
+		}
 		var args = slice.call(arguments, 1);
 		anonymous.prototype = parent;
 		var obj = new anonymous();
-		if (!args.length) return obj;
+		if (!args.length) {
+			return obj;
+		}
 		args.unshift(obj);
 		return extend.apply(undefined, args);
 	},
@@ -69,8 +78,6 @@ extend(hex, {
 			console.log.apply(console, arguments);
 		}
 	},
-	
-	version: version
 	
 });
 

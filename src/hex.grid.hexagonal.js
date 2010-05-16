@@ -18,12 +18,18 @@ hex.grid.hexagonal = {
 	 * @return An object with an x and y property, mapping to the geometry appropriate coordinates of the grid.
 	 */
 	quadrant: function quadrant( posx, posy ) {
+		
 		var 
 			w = this.tileWidth,
 			h = this.tileHeight,
 			qx = floor( ( posx - w * 0.25 ) / ( w * 0.75 ) ),
 			qy = floor( ( posy ) / h );
-		return { x:qx, y:qy };
+		
+		return {
+			x:qx,
+			y:qy
+		};
+		
 	},
 	
 	/**
@@ -33,12 +39,18 @@ hex.grid.hexagonal = {
 	 * @return An object with an x and y property, mapping to the actual screen coordinates.
 	 */
 	screenpos: function screenpos( hexx, hexy ) {
+		
 		var
 			w = this.tileWidth * 0.75,
 			h = this.tileHeight,
 			sx = hexx * w,
 			sy = -hexy * h - hexx * h * 0.5;
-		return { x: sx, y: sy };
+			
+		return {
+			x: sx,
+			y: sy
+		};
+		
 	},
 	
 	/**
@@ -74,8 +86,12 @@ hex.grid.hexagonal = {
 		var
 			px = ( posx - w4 ) % w34,
 			py = ( posy ) % h;
-		if (px < 0) px += w34;
-		if (py < 0) py += h;
+		if (px < 0) {
+			px += w34;
+		}
+		if (py < 0) {
+			py += h;
+		}
 		px -= w2;
 		
 		// Mode determined by x quadrant
@@ -88,11 +104,26 @@ hex.grid.hexagonal = {
 			var
 				x = qx,
 				y = (1 - qx) * 0.5 - qy - (py > h2 ? 1 : 0);
-			if ( px <= 0 || py == h2 ) return { x: x, y: y };
+			if ( px <= 0 || py == h2 ) {
+				return {
+					x: x,
+					y: y
+				};
+			}
 			
 			// Make adjustments if click happend in right-hand third of the quadrant
-			if ( py < h2 && py > ( h2 - px * m ) ) return { x: x+1, y: y-1 };
-			if ( py > h2 && py < ( h2 + px * m ) ) return { x: x+1, y: y };
+			if ( py < h2 && py > ( h2 - px * m ) ) {
+				return {
+					x: x+1,
+					y: y-1
+				};
+			}
+			if ( py > h2 && py < ( h2 + px * m ) ) {
+				return {
+					x: x+1,
+					y: y
+				};
+			}
 			
 		} else {
 			
@@ -103,17 +134,37 @@ hex.grid.hexagonal = {
 			var
 				x = qx,
 				y = -qx * 0.5 - qy;
-			if ( px <= 0 || py == h2 ) return { x: x, y: y };
+			if ( px <= 0 || py == h2 ) {
+				return {
+					x: x,
+					y: y
+				};
+			}
 			
 			// Make adjusments if the click happend in the latter third
-			if ( py < h2 && py < px * m ) return { x: x+1, y: y };
-			if ( py > h2 && py > ( h - px * m ) ) return { x: x+1, y: y-1 };
+			if ( py < h2 && py < px * m ) {
+				return {
+					x: x+1,
+					y: y
+				};
+			}
+			if ( py > h2 && py > ( h - px * m ) ) {
+				return {
+					x: x+1,
+					y: y-1
+				};
+			}
 		}
 		
-		return { x: x, y: y };
+		// fall through case - no adjustments necessary
+		return {
+			x: x,
+			y: y
+		};
 		
 	}
-
+	
 };
 
 })(window.hex);
+

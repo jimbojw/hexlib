@@ -102,15 +102,20 @@ hex.grid.skew = {
 	 * @return An object with an x and y property, mapping to the geometry appropriate coordinates of the grid.
 	 */
 	translate: function translate( x, y ) {
+		
 		var c = this.coefficient;
+		
 		x = x - this.offset.x;
 		y = y - this.offset.y;
+		
 		return {
 			x: floor( c * ( x * this.e2.y - y * this.e2.x ) ),
 			y: floor( c * ( y * this.e1.x - x * this.e1.y ) )
 		};
+		
 	}
 	
 };
 
 })(window.hex);
+

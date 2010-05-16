@@ -27,6 +27,7 @@ var SpriteLayer = {
 		
 		// Whether to continue to animate, or just once through
 		repeat: false
+		
 	},
 	
 	/**
@@ -45,8 +46,10 @@ var SpriteLayer = {
 			len = coords[2],
 			width = this.sprite.spritemap.width,
 			repeat = options.repeat,
-			i=0;
-		var timeout = this.timeout = window.setInterval( function() {
+			i=0,
+			timeout;
+		
+		function callback() {
 			i++;
 			if (i >= len) {
 				if (repeat) {
@@ -57,7 +60,9 @@ var SpriteLayer = {
 				}
 			}
 			elem.style.left = ( -(x + i) * width ) + "px";
-		}, options.delay);
+		}
+		
+		timeout = this.timeout = window.setInterval(callback, options.delay);
 		
 	},
 	
@@ -108,18 +113,21 @@ var SpriteMap = {
 		// Setup layers
 		var layers = s.layers = [];
 		for (var i=0, l=arguments.length; i<l; i++) {
+			
 			var
 				type = arguments[i],
 				coords = this.map[type],
 				x = coords[0],
 				y = coords[1],
 				elem = document.createElement('div');
+			
 			layers[i] = hex.create(SpriteLayer, {
 				type: type,
 				elem: elem,
 				sprite: s,
 				coords: coords
 			});
+			
 			hex.extend(elem.style, {
 				position: "absolute",
 				width: this.mapwidth + "px",
@@ -129,7 +137,9 @@ var SpriteMap = {
 				backgroundImage: "url('" + this.url + "')",
 				filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.url + "', sizingMethod='crop')"
 			});
+			
 			base.appendChild(elem);
+			
 		}
 		
 		return s;
@@ -178,3 +188,4 @@ hex.extend(hex, {
 });
 
 })(window.hex);
+

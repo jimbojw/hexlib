@@ -48,3 +48,4 @@ hex.grid.rectangular = {
 };
 
 })(window.hex);
+

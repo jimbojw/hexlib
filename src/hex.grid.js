@@ -154,7 +154,9 @@ hex.extend(hex, {
 			
 			// Short-circuit if we're inside and there's nothing to do
 			// NOTE: For example, on a mouseout or mouseover where the mousemove already covered it
-			if (inside && lastTile.x === trans.x && lastTile.y === trans.y) return;
+			if (inside && lastTile.x === trans.x && lastTile.y === trans.y) {
+				return;
+			}
 			
 			// Queue up tileout callbacks if there are any
 			if (tileout && lastTile.x !== null && lastTile.y !== null) {
@@ -208,7 +210,9 @@ hex.extend(hex, {
 		function mousebutton(event) {
 			
 			// Short-circuit if the event happened outside the bounds of the grid element.
-			if (!event.inside(elem)) return;
+			if (!event.inside(elem)) {
+				return;
+			}
 			
 			// Prevent the default event action
 			// NOTE: This prevents/disables browser-native dragging of child elements
@@ -241,7 +245,9 @@ hex.extend(hex, {
 			}
 			
 			// Short-circuit if there are no tiledown, tileup or tileclick event handlers
-			if (!g.events.tiledown && !g.events.tileup && !g.events.tileclick) return;
+			if (!g.events.tiledown && !g.events.tileup && !g.events.tileclick) {
+				return;
+			}
 			
 			var
 				// Adjusted mouse position
@@ -305,7 +311,9 @@ hex.extend(hex, {
 		hex.addEvent(document, "mouseup", function(event){
 			
 			// We only care about the mouseup event if the user was panning
-			if (!pan.panning) return;
+			if (!pan.panning) {
+				return;
+			}
 			
 			// Reorient the board, and cease panning
 			g.reorient(
@@ -344,3 +352,4 @@ hex.extend(hex, {
 });
 
 })(window.hex);
+

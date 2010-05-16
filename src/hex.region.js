@@ -81,3 +81,4 @@ hex.extend(hex, {
 });
 
 })(window.hex);
+
