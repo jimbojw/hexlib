@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>hexlib fullscreen test</title>
+<style type="text/css">
+html, body {
+	padding: 0;
+	margin: 0;
+}
+.grid-test {
+	width: 100%;
+	padding-bottom: 100%;
+	background: #ccc;
+	background-image: url(../graphics/background/hex-grid-48x42.png);
+}
+</style>
+</head>
+<body>
+<div class="grid-test" id="hexagonal-grid"></div>
+<script type="text/javascript" src="../src/hex.core.js"></script>
+<script type="text/javascript" src="../src/hex.element.js"></script>
+<script type="text/javascript" src="../src/hex.event.js"></script>
+<script type="text/javascript" src="../src/hex.grid.js"></script>
+<script type="text/javascript" src="../src/hex.grid.hexagonal.js"></script>
+<script type="text/javascript" src="../src/hex.grid.rectangular.js"></script>
+<script type="text/javascript" src="../src/hex.grid.skew.js"></script>
+<script type="text/javascript" src="../src/hex.grid.triangular.js"></script>
+<script type="text/javascript" src="../src/hex.region.js"></script>
+<script type="text/javascript" src="../src/hex.sprite.js"></script>
+<script type="text/javascript">
+(function(hex, undefined){
+
+// Preparing the element
+var elem = document.getElementById("hexagonal-grid");
+
+// Creating a grid
+var grid = hex.grid(elem);
+
+// Element to show the previously hovered tile
+var prev = document.createElement("div");
+prev.style.textAlign = "center";
+prev.style.lineHeight = grid.tileHeight + "px";
+prev.style.position = "absolute";
+prev.style.border = "4px outset yellow";
+prev.style.width = (grid.tileWidth - 7) + "px";
+prev.style.height = (grid.tileHeight - 7) + "px";
+prev.style.display = "none";
+grid.root.appendChild(prev);
+
+// Element to show the currently hovered tile
+var curr = document.createElement("div");
+curr.style.textAlign = "center";
+curr.style.lineHeight = grid.tileHeight + "px";
+curr.style.position = "absolute";
+curr.style.border = "4px outset green";
+curr.style.width = (grid.tileWidth - 7) + "px";
+curr.style.height = (grid.tileHeight - 7) + "px";
+curr.style.display = "none";
+grid.root.appendChild(curr);
+
+// Extra element to mark the origin
+var marker = document.createElement("div");
+marker.style.lineHeight = "0px";
+marker.style.position = "absolute";
+marker.style.border = "5px ridge red";
+marker.style.height = "0px";
+marker.style.width = "0px";
+marker.style.left = "-5px";
+marker.style.top = "-5px";
+grid.root.appendChild(marker);
+
+// Setting mouse movement related tile events
+grid.addEvent("tileover", function(e, x, y) {
+	hex.log([x, y], e.type);
+	var inv = grid.screenpos(x, y);
+	curr.style.left = inv.x + "px";
+	curr.style.top = inv.y + "px";
+	curr.innerHTML = [x, y] + '';
+});
+grid.addEvent("tileout", function(e, x, y) {
+	hex.log([x, y], e.type);
+	var inv = grid.screenpos(x, y);
+	prev.style.left = inv.x + "px";
+	prev.style.top = inv.y + "px";
+	prev.innerHTML = [x, y] + '';
+});
+
+// Setting mouse button related tile events
+grid.addEvent("tiledown", function(e, x, y) {
+	hex.log([x, y], e.type);
+	curr.style.borderStyle = "inset";
+});
+grid.addEvent("tileup", function(e, x, y) {
+	hex.log([x, y], e.type);
+	curr.style.borderStyle = "outset";
+});
+grid.addEvent("tileclick", function(e, x, y) {
+	hex.log([x, y], e.type);
+});
+
+// Setting mouse movement related grid events
+grid.addEvent("gridover", function(e, x, y) {
+	hex.log([x, y], e.type);
+	curr.style.display = "";
+	prev.style.display = "";
+});
+grid.addEvent("gridout", function(e, x, y) {
+	hex.log([x, y], e.type);
+	curr.style.display = "none";
+	prev.style.display = "none";
+});
+
+// Center the root element.
+var size = hex.size(grid.elem);
+grid.reorient(size.x * 0.5, size.y * 0.5);
+
+})(window.hex);
+</script>
+</body>
+</html>
