@@ -6,6 +6,8 @@
 	/* display: none; */
 	width: 620px;
 	float: right;
+	background: white;
+	padding-left: 20px;
 }
 #test-content h3 {
 	clear: both;
