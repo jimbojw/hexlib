@@ -174,7 +174,7 @@ hex.extend(hex, {
 		// Create spritemap
 		var sm = hex.create(SpriteMap, {
 			mapwidth: ( ( x + 1 ) * options.width ),
-			mapheight: ( ( y + 1 ) * options.height ),
+			mapheight: ( ( y + 1 ) * options.height )
 		}, options);
 		
 		return sm;
