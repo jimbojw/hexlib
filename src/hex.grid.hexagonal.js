@@ -1,13 +1,10 @@
 /**
  * hex.grid.hexagonal.js
  */
-(function(){
+(function(hex, undefined){
 
 var
-	undefined,
-	window = this,
-	floor = Math.floor,
-	hex = window.hex;
+	floor = Math.floor;
 
 /**
  * The hexagonal grid prototype.
@@ -119,4 +116,4 @@ hex.grid.hexagonal = {
 
 };
 
-})();
+})(window.hex);

@@ -1,12 +1,7 @@
 /**
  * hex.region.js
  */
-(function(){
-
-var
-	undefined,
-	window = this,
-	hex = window.hex;
+(function(hex, undefined){
 
 /**
  * The Region prototype.
@@ -85,4 +80,4 @@ hex.extend(hex, {
 	
 });
 
-})();
+})(window.hex);

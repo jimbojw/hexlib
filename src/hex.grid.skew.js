@@ -4,13 +4,10 @@
  * a popular grid type in and of itself, since it is identical in principle to a rectangular grid.  However, a 
  * lozenge based grid is the basis of an equalaterial triangular grid, so it's a useful abstraction.
  */
-(function(){
+(function(hex, undefined){
 
 var
-	undefined,
-	window = this,
-	floor = Math.floor,
-	hex = window.hex;
+	floor = Math.floor;
 
 /**
  * The rectangular grid prototype.
@@ -116,4 +113,4 @@ hex.grid.skew = {
 	
 };
 
-})();
+})(window.hex);

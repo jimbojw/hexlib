@@ -1,13 +1,10 @@
 /**
  * hex.core.js
  */
-(function(){
+(function(window, document, undefined){
 
 var
 	version = '0.1',
-	undefined,
-	window = this,
-	document = window.document,
 	join = Array.prototype.join,
 	slice = Array.prototype.slice,
 	has = Object.prototype.hasOwnProperty,
@@ -77,5 +74,5 @@ extend(hex, {
 	
 });
 
-})();
+})(window, window.document);
 

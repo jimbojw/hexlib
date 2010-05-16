@@ -1,12 +1,7 @@
 /**
  * hex.element.js
  */
-(function(){
-
-var
-	undefined,
-	window = this,
-	hex = window.hex;
+(function(hex, undefined){
 
 hex.extend(hex, {
 	
@@ -53,5 +48,5 @@ hex.extend(hex, {
 	
 });
 
-})();
+})(window.hex);
 

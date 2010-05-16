@@ -2,14 +2,10 @@
  * hex.event.js
  * Library methods for DOM and non-DOM events.
  */
-(function(){
+(function(hex, undefined){
 
 var
-	undefined,
-	window = this,
-	document = window.document,
-	slice = Array.prototype.slice,
-	hex = window.hex;
+	slice = Array.prototype.slice;
 
 /**
  * The rich event prototype for non-DOM (hex) events.
@@ -291,4 +287,4 @@ if (document.addEventListener) {
 	
 }
 
-})();
+})(window.hex);

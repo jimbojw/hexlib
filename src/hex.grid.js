@@ -1,13 +1,7 @@
 /**
  * hex.grid.js
  */
-(function(){
-
-var
-	undefined,
-	window = this,
-	document = window.document,
-	hex = window.hex;
+(function(hex, undefined){
 
 /**
  * The Grid prototype.
@@ -349,4 +343,4 @@ hex.extend(hex, {
 	
 });
 
-})();
+})(window.hex);

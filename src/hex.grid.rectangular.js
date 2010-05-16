@@ -1,14 +1,11 @@
 /**
  * hex.grid.rectangular.js
  */
-(function(){
+(function(hex, undefined){
 
 var
-	undefined,
-	window = this,
 	ceil = Math.ceil,
-	floor = Math.floor,
-	hex = window.hex;
+	floor = Math.floor;
 
 /**
  * The rectangular grid prototype.
@@ -50,4 +47,4 @@ hex.grid.rectangular = {
 	
 };
 
-})();
+})(window.hex);

@@ -1,12 +1,7 @@
 /**
  * hex.sprite.js
  */
-(function(){
-
-var
-	undefined,
-	window = this,
-	hex = window.hex;
+(function(hex, undefined){
 
 /**
  * The sprite prototype.
@@ -182,4 +177,4 @@ hex.extend(hex, {
 	
 });
 
-})();
+})(window.hex);
