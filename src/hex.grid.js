@@ -199,6 +199,9 @@ hex.extend(hex, {
 		hex.addEvent(elem, "mousemove", mousemove);
 		hex.addEvent(elem, "mouseover", mousemove);
 		hex.addEvent(elem, "mouseout", mousemove);
+		hex.addEvent(elem, "touchmove", mousemove);
+		hex.addEvent(elem, "touchstart", mousemove);
+		hex.addEvent(elem, "touchend", mousemove);
 		
 		// Keep track of last tile mousedown'ed on
 		var downTile = {
@@ -219,10 +222,12 @@ hex.extend(hex, {
 			event.preventDefault();
 			
 			// Determine the mouse event coordinates
-			var mousepos = event.mousepos(elem);
+			var
+				type = event.type,
+				mousepos = event.mousepos(elem);
 			
 			// Begin panning
-			if (!pan.panning && event.type === "mousedown") {
+			if (!pan.panning && (type === "mousedown" || type === "touchstart")) {
 				pan.panning = true;
 				pan.x = mousepos.x - g.origin.x - g.origin.x;
 				pan.y = mousepos.y - g.origin.y - g.origin.y;
@@ -230,7 +235,7 @@ hex.extend(hex, {
 			}
 			
 			// Cease panning
-			if (pan.panning && event.type === "mouseup") {
+			if (pan.panning && (type === "mouseup" || type === "touchend")) {
 				if (pan.enabled) {
 					g.reorient(
 						mousepos.x - g.origin.x - pan.x,
@@ -263,7 +268,7 @@ hex.extend(hex, {
 				tileup = g.events.tileup,
 				tileclick = g.events.tileclick;
 			
-			if (event.type === "mousedown") {
+			if (type === "mousedown" || type === "touchstart") {
 				
 				// Queue up tiledown callbacks
 				if (tiledown) {
@@ -277,7 +282,7 @@ hex.extend(hex, {
 				downTile.x = trans.x;
 				downTile.y = trans.y;
 				
-			} else if (event.type === "mouseup") {
+			} else if (type === "mouseup" || type === "touchend") {
 				
 				// Queue up tileup callbacks
 				if (tileup) {
@@ -303,12 +308,14 @@ hex.extend(hex, {
 		// Add DOM event handlers to grid element for mouse movement
 		hex.addEvent(elem, "mousedown", mousebutton);
 		hex.addEvent(elem, "mouseup", mousebutton);
+		hex.addEvent(elem, "touchstart", mousebutton);
+		hex.addEvent(elem, "touchend", mousebutton);
 		
 		// A mouseup event anywhere on the document outside the grid element while panning should:
 		// * cease panning,
 		// * fire a gridout event, and
 		// * clear the mousedown and lasttile targets
-		hex.addEvent(document, "mouseup", function(event){
+		function mouseup(event) {
 			
 			// We only care about the mouseup event if the user was panning
 			if (!pan.panning) {
@@ -339,7 +346,9 @@ hex.extend(hex, {
 			// Fire off queued events
 			g.fire();
 			
-		});
+		}
+		hex.addEvent(document, "mouseup", mouseup);
+		hex.addEvent(document, "touchend", mouseup);
 		
 		// Perform initialization if grid supports it
 		if (g.init) {
