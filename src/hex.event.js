@@ -162,6 +162,7 @@ var DOMEvent = {
 	/**
 	 * Determine the screen coordinates for a mouse event (click, mouseover, etc).
 	 * @see http://www.quirksmode.org/js/events_properties.html#position
+	 * @see http://developer.apple.com/safari/library/documentation/appleapplications/reference/safariwebcontent/handlingevents/handlingevents.html
 	 * @param elem DOM element for relative position calculation (optional).
 	 * @return Object with an x and y property for the screen location in pixels.
 	 */
@@ -171,7 +172,15 @@ var DOMEvent = {
 			x = 0,
 			y = 0;
 		
-		if (this.pageX !== undefined && this.pageY !== undefined) {
+		if (this.touches && this.touches.length) {
+			var touch = this.touches[0];
+			x = touch.pageX;
+			y = touch.pageY;
+		} else if (this.changedTouches && this.changedTouches.length) {
+			var touch = this.changedTouches[0];
+			x = touch.pageX;
+			y = touch.pageY;
+		} else if (this.pageX !== undefined && this.pageY !== undefined) {
 			x = this.pageX;
 			y = this.pageY;
 		} else if (this.clientX !== undefined && this.clientY !== undefined) {
