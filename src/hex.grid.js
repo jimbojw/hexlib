@@ -217,14 +217,23 @@ hex.extend(hex, {
 				return;
 			}
 			
-			// Prevent the default event action
-			// NOTE: This prevents/disables browser-native dragging of child elements
-			event.preventDefault();
-			
-			// Determine the mouse event coordinates
+			// Determine the event type and coordinates
 			var
 				type = event.type,
 				mousepos = event.mousepos(elem);
+			
+			// Prevents browser-native dragging of child elements (ex: dragging an image)
+			if (type === "mouseup" || type === "mousedown") {
+				event.preventDefault();
+			}
+			
+			// prevent touch-hold-copy behavior
+			// also allows multi-touch gestures (like pinch-zoom) to occur unabaited
+			if (type === "touchstart") {
+				if (!event.touches || event.touches.length < 2) {
+					event.preventDefault();
+				}
+			}
 			
 			// Begin panning
 			if (!pan.panning && (type === "mousedown" || type === "touchstart")) {
@@ -349,6 +358,9 @@ hex.extend(hex, {
 		}
 		hex.addEvent(document, "mouseup", mouseup);
 		hex.addEvent(document, "touchend", mouseup);
+		hex.addEvent(document, "gesturestart", mouseup);
+		hex.addEvent(document, "gesturechange", mouseup);
+		hex.addEvent(document, "gestureend", mouseup);
 		
 		// Perform initialization if grid supports it
 		if (g.init) {
