@@ -16,7 +16,8 @@ var
 /**
  * Anonymous function used in constructing objects from prototypes.
  */
-function anonymous(){};
+function anonymous(){
+}
 
 /**
  * Extend one object with the properties of any other object(s).
@@ -24,7 +25,7 @@ function anonymous(){};
  * @param args Additional arguments - the objects from which to copy properties.
  * @return The object which was extended.
  */
-var extend = hex.extend = function extend( obj /*, args ... */ ) {
+function extend( obj /*, args ... */ ) {
 	for (var i=0, l=arguments.length; i<l; i++) {
 		var other = arguments[i];
 		if (other) {
@@ -36,7 +37,8 @@ var extend = hex.extend = function extend( obj /*, args ... */ ) {
 		}
 	}
 	return obj;
-};
+}
+hex.extend = extend;
 
 extend(hex, {
 	
