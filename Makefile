@@ -16,9 +16,13 @@ BASE_FILES = \
 	${SRC_DIR}/hex.region.js\
 	${SRC_DIR}/hex.sprite.js
 
-MODULES = ${SRC_DIR}/hex.intro.js\
+MODULES = \
+	${SRC_DIR}/hex.intro.js\
 	${BASE_FILES}\
 	${SRC_DIR}/hex.outro.js
+
+LICENSES = \
+	${SRC_DIR}/hex.license.js
 
 HEX = ${DIST_DIR}/hex.js
 HEX_MIN = ${DIST_DIR}/hex.min.js
@@ -49,7 +53,7 @@ ${HEX}: init ${MODULES}
 
 	@@mkdir -p ${DIST_DIR}
 
-	@@cat ${MODULES} | \
+	@@cat ${LICENSES} ${MODULES} | \
 		sed 's/Date:./&'"${DATE}"'/' | \
 		${VER} > ${HEX};
 
@@ -62,7 +66,9 @@ min: ${HEX_MIN}
 ${HEX_MIN}: ${HEX}
 	@@echo "Building" ${HEX_MIN}
 
-	@@head -15 ${HEX} > ${HEX_MIN}
+	@@cat ${LICENSES} | \
+		sed 's/Date:./&'"${DATE}"'/' | \
+		${VER} > ${HEX_MIN}
 	@@${MINJAR} --js ${HEX} --warning_level QUIET >> ${HEX_MIN}
 
 clean:
