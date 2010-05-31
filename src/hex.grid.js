@@ -129,17 +129,6 @@ hex.extend(hex, {
 					root.style.left = px + "px";
 					root.style.top = py + "px";
 					elem.style.backgroundPosition = px + "px " + py + "px";
-					
-					if (downTile) {
-						var
-							diffx = g.origin.x - px,
-							diffy = g.origin.y - py;
-						diffx = diffx < 0 ? -diffx : diffx;
-						diffy = diffy < 0 ? -diffy : diffy;
-						if (diffx > g.tileWidth || diffy > g.tileHeight) {
-							downTime = null;
-						}
-					}
 				}
 				return;
 			}
@@ -262,12 +251,25 @@ hex.extend(hex, {
 			
 			// Cease panning
 			if (pan.panning && (type === "mouseup" || type === "touchend")) {
+				
+				// cancel tiletap if mouse has moved too far
+				var
+					diffx = mousepos.x - 2 * g.origin.x - pan.x,
+					diffy = mousepos.y - 2 * g.origin.y - pan.y;
+				diffx = diffx < 0 ? -diffx : diffx;
+				diffy = diffy < 0 ? -diffy : diffy;
+				if (diffx > g.tileWidth || diffy > g.tileHeight) {
+					downTime = null;
+				}
+				
+				// reorient if panning is still enabled
 				if (pan.enabled) {
 					g.reorient(
 						mousepos.x - g.origin.x - pan.x,
 						mousepos.y - g.origin.y - pan.y
 					);
 				}
+				
 				pan.enabled = true;
 				pan.panning = false;
 				pan.x = null;
