@@ -125,7 +125,7 @@ hex.extend(hex, {
 				if (pan.enabled && inside) {
 					var
 						px = pos.x - pan.x,
-						py = pos.y - pan.y
+						py = pos.y - pan.y;
 					root.style.left = px + "px";
 					root.style.top = py + "px";
 					elem.style.backgroundPosition = px + "px " + py + "px";
