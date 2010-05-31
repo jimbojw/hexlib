@@ -93,6 +93,9 @@ function setupGrid( grid ) {
 	grid.addEvent("tileclick", function(e, x, y) {
 		hex.log([x, y], e.type);
 	});
+	grid.addEvent("tiletap", function(e, x, y) {
+		hex.log([x, y], e.type);
+	});
 	
 	// Setting mouse movement related grid events
 	grid.addEvent("gridover", function(e, x, y) {

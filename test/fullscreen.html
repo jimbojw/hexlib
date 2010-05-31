@@ -31,6 +31,8 @@ html, body {
 <script type="text/javascript">
 (function(hex, undefined){
 
+hex.debug = 1;
+
 // Preparing the element
 var elem = document.getElementById("hexagonal-grid");
 
@@ -96,6 +98,9 @@ grid.addEvent("tileup", function(e, x, y) {
 	curr.style.borderStyle = "outset";
 });
 grid.addEvent("tileclick", function(e, x, y) {
+	hex.log([x, y], e.type);
+});
+grid.addEvent("tiletap", function(e, x, y) {
 	hex.log([x, y], e.type);
 });
 
