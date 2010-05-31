@@ -129,6 +129,17 @@ hex.extend(hex, {
 					root.style.left = px + "px";
 					root.style.top = py + "px";
 					elem.style.backgroundPosition = px + "px " + py + "px";
+					
+					if (downTile) {
+						var
+							diffx = g.origin.x - px,
+							diffy = g.origin.y - py;
+						diffx = diffx < 0 ? -diffx : diffx;
+						diffy = diffy < 0 ? -diffy : diffy;
+						if (diffx > g.tileWidth || diffy > g.tileHeight) {
+							downTime = null;
+						}
+					}
 				}
 				return;
 			}
@@ -244,8 +255,8 @@ hex.extend(hex, {
 			// Begin panning
 			if (!pan.panning && (type === "mousedown" || type === "touchstart")) {
 				pan.panning = true;
-				pan.x = mousepos.x - g.origin.x - g.origin.x;
-				pan.y = mousepos.y - g.origin.y - g.origin.y;
+				pan.x = mousepos.x - 2 * g.origin.x;
+				pan.y = mousepos.y - 2 * g.origin.y;
 				elem.style.cursor = "move";
 			}
 			
