@@ -14,7 +14,10 @@ var Grid = hex.create(hex.evented, {
 	defaults: {
 		
 		// Type of grid to construct.
-		type: "hexagonal"
+		type: "hexagonal",
+		
+		// Threshold for tiletap event (ms)
+		tapthreshold: 400
 		
 	},
 	
@@ -209,6 +212,9 @@ hex.extend(hex, {
 			y: null
 		};
 		
+		// Keep track of when the last tiledown event happened
+		var downTime = null;
+		
 		// Handler for any mouse button events
 		function mousebutton(event) {
 			
@@ -258,8 +264,14 @@ hex.extend(hex, {
 				elem.style.cursor = "";
 			}
 			
-			// Short-circuit if there are no tiledown, tileup or tileclick event handlers
-			if (!g.events.tiledown && !g.events.tileup && !g.events.tileclick) {
+			var
+				tiledown = g.events.tiledown,
+				tileup = g.events.tileup,
+				tileclick = g.events.tileclick,
+				tiletap = g.events.tiletap;
+			
+			// Short-circuit if there are no tiledown, tileup, tileclick or tiletap event handlers
+			if (!tiledown && !tileup && !tileclick && !tiletap) {
 				return;
 			}
 			
@@ -275,9 +287,12 @@ hex.extend(hex, {
 				
 				tiledown = g.events.tiledown,
 				tileup = g.events.tileup,
-				tileclick = g.events.tileclick;
+				tileclick = g.events.tileclick,
+				tiletap = g.events.tiletap;
 			
 			if (type === "mousedown" || type === "touchstart") {
+				
+				downTime = +new Date();
 				
 				// Queue up tiledown callbacks
 				if (tiledown) {
@@ -298,14 +313,22 @@ hex.extend(hex, {
 					g.queue("tileup", trans.x, trans.y);
 				}
 				
-				// Queue up tileclick callbacks
-				if (tileclick && downTile.x === trans.x && downTile.y === trans.y) {
-					g.queue("tileclick", trans.x, trans.y);
+				// Queue up tileclick and tiletap callbacks
+				if (downTile.x === trans.x && downTile.y === trans.y) {
+					if (tileclick) {
+						g.queue("tileclick", trans.x, trans.y);
+					}
+					if (tiletap && downTime && (+new Date()) - downTime < g.tapthreshold) {
+						g.queue("tiletap", trans.x, trans.y);
+					}
 				}
 				
 				// Clear mousedown target
 				downTile.x = null;
 				downTile.y = null;
+				
+				// Clear tiledown time
+				downTime = null;
 				
 				// Fire off queued events
 				g.fire();
@@ -351,6 +374,9 @@ hex.extend(hex, {
 			downTile.y = null;
 			lastTile.x = null;
 			lastTile.y = null;
+			
+			// Clear tiledown time
+			downTime = null;
 			
 			// Fire off queued events
 			g.fire();
