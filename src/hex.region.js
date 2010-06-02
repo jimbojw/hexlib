@@ -24,7 +24,7 @@ hex.extend(hex, {
 		}
 		
 		// Combine options to default values
-		var options = hex.extend({}, options);
+		options = hex.extend({}, options);
 		
 		// Check that the inside() option is a function
 		if (typeof options.inside !== "function") {

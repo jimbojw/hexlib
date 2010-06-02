@@ -52,7 +52,7 @@ hex.extend(hex, {
 		}
 		
 		// Combine options to default values
-		var options = hex.extend({}, Grid.defaults, options);
+		options = hex.extend({}, Grid.defaults, options);
 		
 		// Check that the particular grid type provides all reqired functions
 		if (hex.grid[options.type] === undefined) {
@@ -133,26 +133,20 @@ hex.extend(hex, {
 				return;
 			}
 			
-			// Short-circuit if there are no tile or grid events
-			if (
-				!g.events.tileover &&
-				!g.events.tileout &&
-				!g.events.gridover &&
-				!g.events.gridout
-			) return;
-			
 			var
 				tileover = g.events.tileover,
 				tileout = g.events.tileout,
 				gridover = g.events.gridover,
-				gridout = g.events.gridout,
+				gridout = g.events.gridout;
+			
+			// Short-circuit if there are no tile or grid events
+			if (!tileover && !tileout && !gridover && !gridout) {
+				return;
+			}
+			
+			var
 				
 				// Determine the grid-centric coordinates of the latest actioned tile
-				mousepos = event.mousepos(elem),
-				pos = {
-					x: mousepos.x - g.origin.x,
-					y: mousepos.y - g.origin.y
-				}
 				trans = g.translate(pos.x, pos.y);
 			
 			// Short-circuit if we're inside and there's nothing to do
@@ -296,12 +290,7 @@ hex.extend(hex, {
 				},
 				
 				// Grid-centric coordinates of the latest actioned tile
-				trans = g.translate(pos.x, pos.y),
-				
-				tiledown = g.events.tiledown,
-				tileup = g.events.tileup,
-				tileclick = g.events.tileclick,
-				tiletap = g.events.tiletap;
+				trans = g.translate(pos.x, pos.y);
 			
 			if (type === "mousedown" || type === "touchstart") {
 				
@@ -369,8 +358,8 @@ hex.extend(hex, {
 			
 			// Reorient the board, and cease panning
 			g.reorient(
-				parseInt( root.style.left ),
-				parseInt( root.style.top )
+				parseInt(root.style.left, 10),
+				parseInt(root.style.top, 10)
 			);
 			pan.panning = false;
 			pan.x = null;

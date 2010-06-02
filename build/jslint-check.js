@@ -5,15 +5,14 @@ var src = readFile("dist/hex.js");
 JSLINT(src, { evil: true, forin: true });
 
 // All of the following are known issues that we think are 'ok'
-// (in contradiction with JSLint) more information here:
-// http://docs.jquery.com/JQuery_Core_Style_Guidelines
+// (in contradiction with JSLint)
 var ok = {
 	"Expected an identifier and instead saw 'undefined' (a reserved word).": true,
 	"Use '===' to compare with 'null'.": true,
 	"Use '!==' to compare with 'null'.": true,
 	"Expected an assignment or function call and instead saw an expression.": true,
-	"Expected a 'break' statement before 'case'.": true
-
+	"Expected a 'break' statement before 'case'.": true,
+	"Don't make functions within a loop.": true
 };
 
 var e = JSLINT.errors, found = 0, w;

@@ -15,9 +15,11 @@ hex.extend(hex, {
 		var
 			left = elem.offsetLeft,
 			top = elem.offsetTop;
-		while (elem = elem.offsetParent) {
+		elem = elem.offsetParent;
+		while (elem) {
 			left += elem.offsetLeft;
 			top += elem.offsetTop;
+			elem = elem.offsetParent;
 		}
 		return {
 			x: left,

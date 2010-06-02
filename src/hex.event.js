@@ -169,15 +169,16 @@ var DOMEvent = {
 	mousepos: function mousepos( elem ) {
 		
 		var
+			touch,
 			x = 0,
 			y = 0;
 		
 		if (this.touches && this.touches.length) {
-			var touch = this.touches[0];
+			touch = this.touches[0];
 			x = touch.pageX;
 			y = touch.pageY;
 		} else if (this.changedTouches && this.changedTouches.length) {
-			var touch = this.changedTouches[0];
+			touch = this.changedTouches[0];
 			x = touch.pageX;
 			y = touch.pageY;
 		} else if (this.pageX !== undefined && this.pageY !== undefined) {
@@ -215,12 +216,14 @@ var DOMEvent = {
 	
 };
 
+var Handler;
+
 if (document.addEventListener) {
 	
 	/**
 	 * The Handler prototype.
 	 */
-	var Handler = {
+	Handler = {
 		
 		/**
 		 * Remove the handler from the object to which it was previously attached.
@@ -271,7 +274,7 @@ if (document.addEventListener) {
 	/**
 	 * The Handler prototype.
 	 */
-	var Handler = {
+	Handler = {
 		
 		/**
 		 * Remove the handler from the object to which it was previously attached.

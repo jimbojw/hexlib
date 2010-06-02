@@ -26,8 +26,8 @@ hex.grid.hexagonal = {
 			qy = floor( ( posy ) / h );
 		
 		return {
-			x:qx,
-			y:qy
+			x: qx,
+			y: qy
 		};
 		
 	},
@@ -74,7 +74,9 @@ hex.grid.hexagonal = {
 			w34 = w4 * 3,
 			h = this.tileHeight,
 			h2 = h * 0.5,
-			m = h2 / w4;
+			m = h2 / w4,
+			x,
+			y;
 		
 		// Determine the "quadrant" in which the click occurred (there are two types, as discussed later)
 		var
@@ -101,9 +103,8 @@ hex.grid.hexagonal = {
 			// | \|
 			
 			// Start with simple cases
-			var
-				x = qx,
-				y = (1 - qx) * 0.5 - qy - (py > h2 ? 1 : 0);
+			x = qx;
+			y = (1 - qx) * 0.5 - qy - (py > h2 ? 1 : 0);
 			if ( px <= 0 || py == h2 ) {
 				return {
 					x: x,
@@ -131,9 +132,8 @@ hex.grid.hexagonal = {
 			// | /|
 			
 			// Start with simple case
-			var
-				x = qx,
-				y = -qx * 0.5 - qy;
+			x = qx;
+			y = -qx * 0.5 - qy;
 			if ( px <= 0 || py == h2 ) {
 				return {
 					x: x,

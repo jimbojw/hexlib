@@ -67,10 +67,18 @@ hex.grid.skew = {
 			maxy = 0,
 			miny = 0;
 		for (var i=0; i<3; i++) {
-			if (xs[i] > maxx) maxx = xs[i];
-			if (xs[i] < minx) minx = xs[i];
-			if (ys[i] > maxy) maxy = ys[i];
-			if (ys[i] < miny) miny = ys[i];
+			if (xs[i] > maxx) {
+				maxx = xs[i];
+			}
+			if (xs[i] < minx) {
+				minx = xs[i];
+			}
+			if (ys[i] > maxy) {
+				maxy = ys[i];
+			}
+			if (ys[i] < miny) {
+				miny = ys[i];
+			}
 		}
 		
 		// Set the offset and tile sizes accordingly

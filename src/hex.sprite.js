@@ -172,8 +172,12 @@ hex.extend(hex, {
 			y = 0;
 		for (var k in map) {
 			var coords = map[k];
-			if (coords[0] > x) x = coords[0];
-			if (coords[1] > y) y = coords[1];
+			if (coords[0] > x) {
+				x = coords[0];
+			}
+			if (coords[1] > y) {
+				y = coords[1];
+			}
 		}
 		
 		// Create spritemap
