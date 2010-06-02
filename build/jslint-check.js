@@ -1,6 +1,6 @@
 load("build/jslint.js");
 
-var src = readFile("dist/jquery.js");
+var src = readFile("dist/hex.js");
 
 JSLINT(src, { evil: true, forin: true });
 
