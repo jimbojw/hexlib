@@ -1,4 +1,4 @@
-## (hexlib)[http://hexlib.com/]
+## [hexlib](http://hexlib.com/)
 
 JavaScript library for creating web games, particularly tile games played on a hexagonal grid.
 
