@@ -390,6 +390,27 @@ hex.extend(hex, {
 		hex.addEvent(document, "gesturechange", mouseup);
 		hex.addEvent(document, "gestureend", mouseup);
 		
+		// A mousewheel event should be captured, and then reorient up or down the height of a tile
+		// @see http://www.switchonthecode.com/tutorials/javascript-tutorial-the-scroll-wheel
+		function mousewheel(event) {
+			
+			var
+				// did the event happen inside the bounds of the grid element?
+				inside = event.inside(elem),
+				
+				// was it up or down?
+				wheelData = event.detail ? event.detail * -1 : event.wheelDelta * 0.025,
+				direction = wheelData > 0 ? 1 : wheelData < 0 ? -1 : 0;
+			
+			// scroll it
+			if (inside && direction) {
+				event.preventDefault();
+				g.reorient(g.origin.x, g.origin.y + g.tileHeight * direction);
+			}
+		}
+		hex.addEvent(elem, "mousewheel", mousewheel);
+		hex.addEvent(elem, "DOMMouseScroll", mousewheel);
+		
 		// Perform initialization if grid supports it
 		if (g.init) {
 			g.init();
