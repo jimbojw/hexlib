@@ -405,7 +405,11 @@ hex.extend(hex, {
 			// scroll it
 			if (inside && direction) {
 				event.preventDefault();
-				g.reorient(g.origin.x, g.origin.y + g.tileHeight * direction);
+				if (event.wheelDeltaX || event.axis && event.axis === event.HORIZONTAL_AXIS) {
+					g.reorient(g.origin.x + g.tileWidth * direction, g.origin.y);
+				} else {
+					g.reorient(g.origin.x, g.origin.y + g.tileHeight * direction);
+				}
 			}
 		}
 		hex.addEvent(elem, "mousewheel", mousewheel);
