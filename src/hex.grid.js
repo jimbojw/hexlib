@@ -414,6 +414,8 @@ hex.extend(hex, {
 		hex.addEvent(document, "gesturestart", mouseup);
 		hex.addEvent(document, "gesturechange", mouseup);
 		hex.addEvent(document, "gestureend", mouseup);
+		hex.addEvent(document, "MozTouchUp", mouseup);
+		hex.addEvent(document, "MozTouchRelease", mouseup);
 		
 		// A mousewheel event should be captured, and then reorient up or down the height of a tile
 		// @see http://www.switchonthecode.com/tutorials/javascript-tutorial-the-scroll-wheel
