@@ -199,6 +199,10 @@ hex.extend(hex, {
 		hex.addEvent(elem, "touchmove", mousemove);
 		hex.addEvent(elem, "touchstart", mousemove);
 		hex.addEvent(elem, "touchend", mousemove);
+		hex.addEvent(elem, "MozTouchDown", mousemove);
+		hex.addEvent(elem, "MozTouchMove", mousemove);
+		hex.addEvent(elem, "MozTouchUp", mousemove);
+		hex.addEvent(elem, "MozTouchRelease", mousemove);
 		
 		// Keep track of last tile mousedown'ed on
 		var downTile = {
@@ -344,6 +348,9 @@ hex.extend(hex, {
 		hex.addEvent(elem, "mouseup", mousebutton);
 		hex.addEvent(elem, "touchstart", mousebutton);
 		hex.addEvent(elem, "touchend", mousebutton);
+		hex.addEvent(elem, "MozTouchDown", mousemove);
+		hex.addEvent(elem, "MozTouchUp", mousemove);
+		hex.addEvent(elem, "MozTouchRelease", mousemove);
 		
 		// A mouseup event anywhere on the document outside the grid element while panning should:
 		// * cease panning,
