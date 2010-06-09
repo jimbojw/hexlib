@@ -240,7 +240,11 @@ hex.extend(hex, {
 			}
 			
 			// Begin panning
-			if (!pan.panning && (type === "mousedown" || type === "touchstart")) {
+			if (!pan.panning && (
+				type === "mousedown" ||
+				type === "touchstart" ||
+				type === "MozTouchDown"
+			)) {
 				pan.panning = true;
 				pan.x = mousepos.x - 2 * g.origin.x;
 				pan.y = mousepos.y - 2 * g.origin.y;
@@ -248,7 +252,12 @@ hex.extend(hex, {
 			}
 			
 			// Cease panning
-			if (pan.panning && (type === "mouseup" || type === "touchend")) {
+			if (pan.panning && (
+				type === "mouseup" ||
+				type === "touchend" ||
+				type === "MozTouchUp" ||
+				type === "MozTouchRelease"
+			)) {
 				
 				// cancel tiletap if mouse has moved too far
 				var
@@ -296,7 +305,11 @@ hex.extend(hex, {
 				// Grid-centric coordinates of the latest actioned tile
 				trans = g.translate(pos.x, pos.y);
 			
-			if (type === "mousedown" || type === "touchstart") {
+			if (
+				type === "mousedown" ||
+				type === "touchstart" ||
+				type === "MozTouchDown"
+			) {
 				
 				downTime = +new Date();
 				
@@ -312,7 +325,12 @@ hex.extend(hex, {
 				downTile.x = trans.x;
 				downTile.y = trans.y;
 				
-			} else if (type === "mouseup" || type === "touchend") {
+			} else if (
+				type === "mouseup" ||
+				type === "touchend" ||
+				type === "MozTouchUp" ||
+				type === "MozTouchRelease"
+			) {
 				
 				// Queue up tileup callbacks
 				if (tileup) {
