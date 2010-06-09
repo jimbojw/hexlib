@@ -394,6 +394,11 @@ hex.extend(hex, {
 		// @see http://www.switchonthecode.com/tutorials/javascript-tutorial-the-scroll-wheel
 		function mousewheel(event) {
 			
+			// short-circuit if the ctrl key is being pressed (zoom)
+			if (event.ctrlKey) {
+				return;
+			}
+			
 			var
 				// did the event happen inside the bounds of the grid element?
 				inside = event.inside(elem),
