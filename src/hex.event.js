@@ -212,6 +212,18 @@ var DOMEvent = {
 		} else {
 			e.returnValue = false;
 		}
+	},
+	
+	/**
+	 * Stop the event from propagating.
+	 */
+	stopPropagation: function stopPropagation() {
+		var e = this.event;
+		if (e.stopPropagation) {
+			e.stopPropagation();
+		} else {
+			e.cancelBubble = true;
+		}
 	}
 	
 };
