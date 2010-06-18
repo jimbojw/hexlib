@@ -7,10 +7,11 @@
 html, body {
 	padding: 0;
 	margin: 0;
+	height: 100%;
 }
 .grid-test {
 	width: 100%;
-	padding-bottom: 50%;
+	height: 100%;
 	background: #ccc;
 	background-image: url(../graphics/background/hex-grid-48x42.png);
 }
@@ -31,7 +32,7 @@ html, body {
 <script type="text/javascript">
 (function(hex, undefined){
 
-hex.debug = 1;
+//hex.debug = 1;
 
 // Preparing the element
 var elem = document.getElementById("hexagonal-grid");
@@ -115,6 +116,14 @@ grid.addEvent("gridout", function(e, x, y) {
 	curr.style.display = "none";
 	prev.style.display = "none";
 });
+
+function report(event) {
+	var args = [].slice.call(arguments, 1);
+	console.log(event.type, args);
+}
+grid.addEvent("panstart", report);
+grid.addEvent("panmove", report);
+grid.addEvent("panend", report);
 
 // Center the root element.
 var size = hex.size(grid.elem);
