@@ -129,6 +129,7 @@ hex.extend(hex, {
 					root.style.left = px + "px";
 					root.style.top = py + "px";
 					elem.style.backgroundPosition = px + "px " + py + "px";
+					g.trigger("panmove", mousepos.x - pan.x - 2 * g.origin.x, mousepos.y - pan.y - 2 * g.origin.y);
 				}
 				return;
 			}
@@ -249,6 +250,7 @@ hex.extend(hex, {
 				pan.x = mousepos.x - 2 * g.origin.x;
 				pan.y = mousepos.y - 2 * g.origin.y;
 				elem.style.cursor = "move";
+				g.queue("panstart");
 			}
 			
 			// Cease panning
@@ -271,6 +273,7 @@ hex.extend(hex, {
 				
 				// reorient if panning is still enabled
 				if (pan.enabled) {
+					g.queue("panend", mousepos.x - pan.x - 2 * g.origin.x, mousepos.y - pan.y - 2 * g.origin.y);
 					g.reorient(
 						mousepos.x - g.origin.x - pan.x,
 						mousepos.y - g.origin.y - pan.y
@@ -292,6 +295,7 @@ hex.extend(hex, {
 			
 			// Short-circuit if there are no tiledown, tileup, tileclick or tiletap event handlers
 			if (!tiledown && !tileup && !tileclick && !tiletap) {
+				g.fire();
 				return;
 			}
 			
@@ -315,7 +319,7 @@ hex.extend(hex, {
 				
 				// Queue up tiledown callbacks
 				if (tiledown) {
-					var res = g.trigger("tiledown", trans.x, trans.y);
+					var res = g.queue("tiledown", trans.x, trans.y);
 					if (res && res.prevented) {
 						pan.enabled = false;
 					}
@@ -354,10 +358,10 @@ hex.extend(hex, {
 				// Clear tiledown time
 				downTime = null;
 				
-				// Fire off queued events
-				g.fire();
-			
 			}
+			
+			// Fire off any queued events
+			g.fire();
 			
 		}
 		
