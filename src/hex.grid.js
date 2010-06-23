@@ -318,8 +318,8 @@ hex.extend(hex, {
 				downTime = +new Date();
 				
 				// Trigger tiledown callbacks
-				// Note: Can't use queue here since we need to find out if preventDefault() has been called
 				if (tiledown) {
+					g.fire(); // fire any previously queued events
 					var res = g.trigger("tiledown", trans.x, trans.y);
 					if (res && res.prevented) {
 						pan.enabled = false;
@@ -443,9 +443,17 @@ hex.extend(hex, {
 			if (inside && direction) {
 				event.preventDefault();
 				if (event.wheelDeltaX || event.axis && event.axis === event.HORIZONTAL_AXIS) {
-					g.reorient(g.origin.x + g.tileWidth * direction, g.origin.y);
+					var deltax = g.tileWidth * direction;
+					g.queue("panstart");
+					g.queue("panmove", deltax, 0);
+					g.queue("panend", deltax, 0);
+					g.reorient(g.origin.x + deltax, g.origin.y);
 				} else {
-					g.reorient(g.origin.x, g.origin.y + g.tileHeight * direction);
+					var deltay = g.tileHeight * direction;
+					g.queue("panstart");
+					g.queue("panmove", 0, deltay);
+					g.queue("panend", 0, deltay);
+					g.reorient(g.origin.x, g.origin.y + deltay);
 				}
 			}
 		}
