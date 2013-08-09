@@ -6,18 +6,18 @@
 module("element");
 
 test("hex.position", function() {
-	expect(0);
-	// TODO: Add tests!
+  expect(0);
+  // TODO: Add tests!
 });
 
 test("hex.size", function() {
-	expect(0);
-	// TODO: Add tests!
+  expect(0);
+  // TODO: Add tests!
 });
 
 test("hex.style", function() {
-	expect(0);
-	// TODO: Add tests!
+  expect(0);
+  // TODO: Add tests!
 });
 
 
