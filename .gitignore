@@ -5,3 +5,5 @@
 test/qunit
 /*.html
 .DS_Store
+node_modules
+dist
