@@ -1,6 +1,6 @@
 {
   "name": "hexlib",
-  "description": "JavaScript library for making tile-based DOM games.",
+  "description": "JavaScript library for making grid-based DOM games.",
   "version": "0.1.0",
   "homepage": "http://hexlib.com/",
   "author": {
@@ -14,10 +14,15 @@
     "url": "https://github.com/jimbojw/hexlib/issues"
   },
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-concat": "~0.1.2"
-  }
+  },
+  "keywords": [
+    "hexagon",
+    "hexagonal",
+    "hexlib"
+  ]
 }
