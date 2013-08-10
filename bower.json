@@ -1,0 +1,8 @@
+{
+  "name": "hexlib",
+  "version": "0.1.0",
+  "main": ["./dist/js/hex.js", "./dist/js/hex.min.js"],
+  "ignore": [
+      "**/.*"
+  ]
+}
