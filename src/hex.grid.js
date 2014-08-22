@@ -121,8 +121,8 @@ hex.extend(hex, {
         };
       
       // Handle panning
-      if (pan.panning) {
-        if (pan.enabled && inside) {
+      if (pan.panning && pan.enabled) {
+        if (inside) {
           var
             px = pos.x - pan.x,
             py = pos.y - pan.y;
