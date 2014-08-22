@@ -15,6 +15,7 @@ module.exports = function(grunt) {
           'src/hex.event.js',
           'src/hex.grid.js',
           'src/hex.grid.hexagonal.js',
+          'src/hex.grid.hexagonal-horizontal.js',
           'src/hex.grid.rectangular.js',
           'src/hex.grid.skew.js',
           'src/hex.grid.triangular.js',

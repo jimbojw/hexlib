@@ -136,6 +136,43 @@ test("hex.region(hexagonal grid)", function() {
   
 });
 
+test("hex.region(hexagonal-horizontal grid)", function() {
+
+  expect(2);
+
+  // Preparing the element
+  var elem = document.getElementById("regioned-hexagonal-horizontal-grid");
+
+  // Creating a grid
+  var grid = hex.grid(elem, { type: "hexagonal_horizontal" });
+  ok(grid, "hex.grid(elem)");
+
+  // Creating a region
+  var region = hex.region(grid, {
+    inside: function inside(x, y) {
+      // In the neighborhood of 0,0
+      if (x < -2 || x > 2) return false;
+      if (x === -2 && (y < 0 || y > 2)) return false;
+      if (x === -1 && (y < -1 || y > 2)) return false;
+      if (x === 0 && (y < -2 || y > 2)) return false;
+      if (x === 1 && (y < -2 || y > 1)) return false;
+      if (x === 2 && (y < -2 || y > 0)) return false;
+      return true;
+      return (
+        ( x === 0 && y === 0 ) ||
+        ( x > -2 && x < 2 && y > -2 && y < 2 )
+      );
+    }
+  });
+  ok(region, "hex.region(grid)");
+
+  // Additional setup steps
+  setupRegionedGrid(region);
+
+  grid.reorient(grid.origin.x - grid.tileWidth * 0.5, grid.origin.y - grid.tileHeight * 0.5);
+
+});
+
 test("hex.region(rectangular grid)", function() {
   
   expect(2);

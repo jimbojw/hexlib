@@ -33,6 +33,10 @@
 #regioned-hexagonal-grid {
 	background-image: url(../graphics/background/hex-grid-48x42.png);
 }
+#hexagonal-horizontal-grid,
+#regioned-hexagonal-horizontal-grid {
+	background-image: url(../graphics/background/hex-grid-42x48.png);
+}
 #rectangular-grid,
 #regioned-rectangular-grid {
 	background-image: url(../graphics/background/square-grid-48x48.png);
@@ -51,6 +55,14 @@
 	height: 210px;
 	width: 192px;
 	background-image: url(../graphics/region/simple-hexagon-3x3x3-192x210.png);
+}
+#regioned-hexagonal-horizontal-grid .backdrop{
+	position: absolute;
+	left: -84px;
+	top: -72px;
+	height: 192px;
+	width: 210px;
+	background-image: url(../graphics/region/simple-hexagon-3x3x3-210x192.png);
 }
 #regioned-rectangular-grid .backdrop{
 	position: absolute;
