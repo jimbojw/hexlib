@@ -158,24 +158,24 @@ hex.extend(hex, {
       
       // Queue up tileout callbacks if there are any
       if (tileout && lastTile.x !== null && lastTile.y !== null) {
-        g.queue("tileout", lastTile.x, lastTile.y);
+        g.queue("tileout", lastTile.x, lastTile.y, event);
       }
       
       // Queue up gridout callbacks if applicable
       if (!inside && gridout && lastTile.x !== null && lastTile.y !== null) {
-        g.queue("gridout", lastTile.x, lastTile.y);
+        g.queue("gridout", lastTile.x, lastTile.y, event);
       }
       
       if (inside) {
         
         // Queue up gridover callbacks if applicable
         if (gridover && lastTile.x === null && lastTile.y === null) {
-          g.queue("gridover", trans.x, trans.y);
+          g.queue("gridover", trans.x, trans.y, event);
         }
         
         // Queue up tileover callbacks if there are any
         if (tileover) {
-          g.queue("tileover", trans.x, trans.y);
+          g.queue("tileover", trans.x, trans.y, event);
         }
         
         lastTile.x = trans.x;
@@ -252,7 +252,7 @@ hex.extend(hex, {
         pan.x = mousepos.x - 2 * g.origin.x;
         pan.y = mousepos.y - 2 * g.origin.y;
         elem.style.cursor = "move";
-        g.queue("panstart");
+        g.queue("panstart", event);
       }
       
       // Cease panning
@@ -275,7 +275,7 @@ hex.extend(hex, {
         
         // reorient if panning is still enabled
         if (pan.enabled) {
-          g.queue("panend", mousepos.x - pan.x - 2 * g.origin.x, mousepos.y - pan.y - 2 * g.origin.y);
+          g.queue("panend", mousepos.x - pan.x - 2 * g.origin.x, mousepos.y - pan.y - 2 * g.origin.y, event);
           g.reorient(
             mousepos.x - g.origin.x - pan.x,
             mousepos.y - g.origin.y - pan.y
@@ -322,7 +322,7 @@ hex.extend(hex, {
         // Trigger tiledown callbacks
         if (tiledown) {
           g.fire(); // fire any previously queued events
-          var res = g.trigger("tiledown", trans.x, trans.y);
+          var res = g.trigger("tiledown", trans.x, trans.y, event);
           if (res && res.prevented) {
             pan.enabled = false;
           }
@@ -341,16 +341,16 @@ hex.extend(hex, {
         
         // Queue up tileup callbacks
         if (tileup) {
-          g.queue("tileup", trans.x, trans.y);
+          g.queue("tileup", trans.x, trans.y, event);
         }
         
         // Queue up tileclick and tiletap callbacks
         if (downTile.x === trans.x && downTile.y === trans.y) {
           if (tileclick) {
-            g.queue("tileclick", trans.x, trans.y);
+            g.queue("tileclick", trans.x, trans.y, event);
           }
           if (tiletap && downTime && (+new Date()) - downTime < g.tapthreshold) {
-            g.queue("tiletap", trans.x, trans.y);
+            g.queue("tiletap", trans.x, trans.y, event);
           }
         }
         
@@ -400,7 +400,7 @@ hex.extend(hex, {
       
       // Queue gridout event handlers if applicable
       if (downTile.x !== null && downTile.y !== null && !event.inside(elem)) {
-        g.queue("gridout", downTile.x, downTile.y);
+        g.queue("gridout", downTile.x, downTile.y, event);
       }
       
       // Clear previously set downTile and lastTile coordinates
@@ -448,15 +448,15 @@ hex.extend(hex, {
         e.preventDefault();
         if (event.wheelDeltaX || event.axis && event.axis === event.HORIZONTAL_AXIS) {
           var deltax = g.tileWidth * direction;
-          g.queue("panstart");
-          g.queue("panmove", deltax, 0);
-          g.queue("panend", deltax, 0);
+          g.queue("panstart", event);
+          g.queue("panmove", deltax, 0, event);
+          g.queue("panend", deltax, 0, event);
           g.reorient(g.origin.x + deltax, g.origin.y);
         } else {
           var deltay = g.tileHeight * direction;
-          g.queue("panstart");
-          g.queue("panmove", 0, deltay);
-          g.queue("panend", 0, deltay);
+          g.queue("panstart", event);
+          g.queue("panmove", 0, deltay, event);
+          g.queue("panend", 0, deltay, event);
           g.reorient(g.origin.x, g.origin.y + deltay);
         }
       }
