@@ -96,11 +96,11 @@ hex.grid.hexagonal_horizontal = {
     }
     py -= h2;
 
-    // Mode determined by x quadrant
+    // Mode determined by y quadrant
     if (qy % 2) {
 
-      // |_/|  A-type quadrant
-      // | \|
+      // |\ /|  A-type quadrant (bottom)
+      // | | |
 
       // Start with simple cases
       y = qy;
@@ -112,7 +112,8 @@ hex.grid.hexagonal_horizontal = {
         };
       }
 
-      // Make adjustments if click happened in right-hand third of the quadrant
+      // Make adjustments if the click not happened in the middle third of the quadrant
+
       if (px < w2 && px > ( w2 - py * m)) {
         return {
           y: y + 1,
@@ -127,9 +128,8 @@ hex.grid.hexagonal_horizontal = {
       }
 
     } else {
-
-      // | \|  B-type quadrant
-      // | /|
+      // | | |  B-type quadrant (top)
+      // |/ \|
 
       // Start with simple case
       y = qy;
@@ -141,7 +141,8 @@ hex.grid.hexagonal_horizontal = {
         };
       }
 
-      // Make adjustments if the click happened in the latter third
+      // Make adjustments if the click not happened in the middle third of the quadrant
+
       if (px < w2 && px < py * m) {
         return {
           y: y + 1,
