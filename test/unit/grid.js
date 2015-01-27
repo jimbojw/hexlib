@@ -131,6 +131,22 @@ test("hex.grid(hexagonal)", function() {
   
 });
 
+test("hex.grid(hexagonal-horizontal)", function() {
+
+  expect(1);
+
+  // Preparing the element
+  var elem = document.getElementById("hexagonal-horizontal-grid");
+
+  // Creating a grid
+  var grid = hex.grid(elem, { type: "hexagonal_horizontal" });
+  ok(grid, "hex.grid(elem)");
+
+  // Additional setup steps
+  setupGrid(grid);
+
+});
+
 test("hex.grid(rectangular)", function() {
   
   expect(1);
